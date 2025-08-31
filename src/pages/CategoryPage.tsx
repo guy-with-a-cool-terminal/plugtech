@@ -4,7 +4,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
 import ShoppingCart from '../components/ShoppingCart';
-import productsData from '../data/products.json';
+import { useProducts } from '../hooks/useProducts';
+import { useParams } from 'react-router-dom';
 
 interface Product {
   id: string;
@@ -12,50 +13,23 @@ interface Product {
   category: string;
   price: number;
   image: string;
-  specs: {
-    processor: string;
-    ram: string;
-    storage: string;
-    display: string;
-  };
+  processor: string;
+  ram: string;
+  storage: string;
+  display: string;
   condition: string;
-  inStock: boolean;
+  in_stock: boolean;
 }
 
 interface CartItem extends Product {
   quantity: number;
 }
 
-interface CategoryPageProps {
-  category: string;
-}
-
-const CategoryPage = ({ category }: CategoryPageProps) => {
-  const [products, setProducts] = useState<Product[]>(productsData.products);
+const CategoryPage = () => {
+  const { category } = useParams<{ category: string }>();
+  const { products, loading } = useProducts();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  
-  // Listen for product updates from admin panel
-  useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'plugtech-products' && e.newValue) {
-        const updatedProducts = JSON.parse(e.newValue);
-        setProducts(updatedProducts);
-      }
-    };
-
-    // Load products from localStorage if available
-    const savedProducts = localStorage.getItem('plugtech-products');
-    if (savedProducts) {
-      setProducts(JSON.parse(savedProducts));
-    }
-
-    window.addEventListener('storage', handleStorageChange);
-    
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
 
   // Load cart from localStorage
   useEffect(() => {
@@ -108,15 +82,26 @@ const CategoryPage = ({ category }: CategoryPageProps) => {
   
   const filteredProducts = products.filter(product => product.category === category);
   
-  const categoryTitles = {
+  const categoryTitles: Record<string, string> = {
     laptops: 'Laptops',
-    desktops: 'Desktop Computers',
+    desktops: 'Desktop Computers',  
     gaming: 'Gaming Computers',
     monitors: 'Monitors & Displays',
     accessories: 'Computer Accessories'
   };
 
-  const categoryTitle = categoryTitles[category as keyof typeof categoryTitles] || 'Products';
+  const categoryTitle = categoryTitles[category || ''] || 'Products';
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading products...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
 import ShoppingCart from '../components/ShoppingCart';
-import productsData from '../data/products.json';
+import { useProducts } from '../hooks/useProducts';
 
 interface Product {
   id: string;
@@ -13,14 +13,12 @@ interface Product {
   category: string;
   price: number;
   image: string;
-  specs: {
-    processor: string;
-    ram: string;
-    storage: string;
-    display: string;
-  };
+  processor: string;
+  ram: string;
+  storage: string;
+  display: string;
   condition: string;
-  inStock: boolean;
+  in_stock: boolean;
 }
 
 interface CartItem extends Product {
@@ -30,72 +28,21 @@ interface CartItem extends Product {
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
-  const [products, setProducts] = useState<Product[]>(productsData.products);
+  const { products, loading } = useProducts();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Safely handle localStorage operations
-  const safeLocalStorageGet = (key: string): string | null => {
-    try {
-      return localStorage.getItem(key);
-    } catch (error) {
-      return null;
-    }
-  };
-
-  const safeLocalStorageSet = (key: string, value: string): void => {
-    try {
-      localStorage.setItem(key, value);
-    } catch (error) {
-      // Silently fail if localStorage is not available
-    }
-  };
-
-  // Listen for product updates from admin panel
-  useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'plugtech-products' && e.newValue) {
-        try {
-          const updatedProducts = JSON.parse(e.newValue);
-          setProducts(updatedProducts);
-        } catch (error) {
-          // Ignore parsing errors
-        }
-      }
-    };
-
-    // Load products from localStorage if available
-    const savedProducts = safeLocalStorageGet('plugtech-products');
-    if (savedProducts) {
-      try {
-        setProducts(JSON.parse(savedProducts));
-      } catch (error) {
-        // Use default products if parsing fails
-      }
-    }
-
-    window.addEventListener('storage', handleStorageChange);
-    
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
-
   // Load cart from localStorage
   useEffect(() => {
-    const savedCart = safeLocalStorageGet('plugtech-cart');
+    const savedCart = localStorage.getItem('plugtech-cart');
     if (savedCart) {
-      try {
-        setCartItems(JSON.parse(savedCart));
-      } catch (error) {
-        // Use empty cart if parsing fails
-      }
+      setCartItems(JSON.parse(savedCart));
     }
   }, []);
 
   // Save cart to localStorage
   useEffect(() => {
-    safeLocalStorageSet('plugtech-cart', JSON.stringify(cartItems));
+    localStorage.setItem('plugtech-cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
   const addToCart = (product: Product) => {
@@ -148,23 +95,34 @@ const SearchPage = () => {
       productName.includes(searchTerm) ||
       productCategory.includes(searchTerm) ||
       productCondition.includes(searchTerm) ||
-      product.specs.processor.toLowerCase().includes(searchTerm) ||
-      product.specs.ram.toLowerCase().includes(searchTerm) ||
-      product.specs.storage.toLowerCase().includes(searchTerm) ||
-      product.specs.display.toLowerCase().includes(searchTerm) ||
+      product.processor.toLowerCase().includes(searchTerm) ||
+      product.ram.toLowerCase().includes(searchTerm) ||
+      product.storage.toLowerCase().includes(searchTerm) ||
+      product.display.toLowerCase().includes(searchTerm) ||
       // Split search term by spaces and check if any word matches
       searchTerm.split(' ').some(word => 
         word.length > 0 && (
           productName.includes(word) ||
           productCategory.includes(word) ||
-          product.specs.processor.toLowerCase().includes(word) ||
-          product.specs.ram.toLowerCase().includes(word) ||
-          product.specs.storage.toLowerCase().includes(word) ||
-          product.specs.display.toLowerCase().includes(word)
+          product.processor.toLowerCase().includes(word) ||
+          product.ram.toLowerCase().includes(word) ||
+          product.storage.toLowerCase().includes(word) ||
+          product.display.toLowerCase().includes(word)
         )
       )
     );
   });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading products...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

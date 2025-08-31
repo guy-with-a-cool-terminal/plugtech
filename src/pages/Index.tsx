@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Laptop, Monitor, Gamepad2, HardDrive, Headphones, Star } from 'lucide-react';
 import Header from '../components/Header';
@@ -6,7 +5,7 @@ import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
 import ShoppingCart from '../components/ShoppingCart';
 import WhatsAppButton from '../components/WhatsAppButton';
-import productsData from '../data/products.json';
+import { useProducts } from '../hooks/useProducts';
 
 interface Product {
   id: string;
@@ -14,14 +13,12 @@ interface Product {
   category: string;
   price: number;
   image: string;
-  specs: {
-    processor: string;
-    ram: string;
-    storage: string;
-    display: string;
-  };
+  processor: string;
+  ram: string;
+  storage: string;
+  display: string;
   condition: string;
-  inStock: boolean;
+  in_stock: boolean;
 }
 
 interface CartItem extends Product {
@@ -29,7 +26,7 @@ interface CartItem extends Product {
 }
 
 const Index = () => {
-  const [products, setProducts] = useState<Product[]>(productsData.products);
+  const { products, loading } = useProducts();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -39,28 +36,6 @@ const Index = () => {
     if (savedCart) {
       setCartItems(JSON.parse(savedCart));
     }
-  }, []);
-
-  // Listen for product updates from admin panel
-  useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'plugtech-products' && e.newValue) {
-        const updatedProducts = JSON.parse(e.newValue);
-        setProducts(updatedProducts);
-      }
-    };
-
-    // Load products from localStorage if available
-    const savedProducts = localStorage.getItem('plugtech-products');
-    if (savedProducts) {
-      setProducts(JSON.parse(savedProducts));
-    }
-
-    window.addEventListener('storage', handleStorageChange);
-    
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
   }, []);
 
   // Save cart to localStorage
@@ -137,7 +112,18 @@ const Index = () => {
     },
   ];
 
-  const featuredProduct = products.find(p => p.id === 'hp-probook-440-g10');
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading products...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const featuredProduct = products.find(p => p.name.includes('HP ProBook'));
   const latestProducts = products.slice(0, 8);
   const laptops = products.filter(p => p.category === 'laptops').slice(0, 4);
   const gaming = products.filter(p => p.category === 'gaming');

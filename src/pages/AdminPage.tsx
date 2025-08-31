@@ -1,9 +1,12 @@
-
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Upload, Save, X, Search } from 'lucide-react';
+import { Plus, Edit, Trash2, Upload, Save, X, Search, LogOut } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { useProducts } from '@/hooks/useProducts';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import productsData from '../data/products.json';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface Product {
   id: string;
@@ -11,26 +14,27 @@ interface Product {
   category: string;
   price: number;
   image: string;
-  specs: {
-    processor: string;
-    ram: string;
-    storage: string;
-    display: string;
-  };
+  processor: string;
+  ram: string;
+  storage: string;
+  display: string;
   condition: string;
-  inStock: boolean;
-  dateAdded: string;
+  in_stock: boolean;
+  date_added: string;
 }
 
 const AdminPage = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState('');
-  const [products, setProducts] = useState<Product[]>(productsData.products);
+  const { user, isAdmin, signOut, loading: authLoading } = useAuth();
+  const { products, loading, addProduct, updateProduct, deleteProduct } = useProducts();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
+  const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     category: 'laptops',
@@ -40,24 +44,26 @@ const AdminPage = () => {
     storage: '',
     display: '',
     condition: 'Refurbished',
-    inStock: true,
+    in_stock: true,
     image: ''
   });
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === 'plugtech2025') {
-      setIsAuthenticated(true);
-    } else {
-      alert('Invalid password');
+  // Redirect if not authenticated or not admin
+  useEffect(() => {
+    if (!authLoading && (!user || !isAdmin)) {
+      navigate('/auth');
     }
+  }, [user, isAdmin, authLoading, navigate]);
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setSelectedFile(file);
-      // Create preview URL
       const reader = new FileReader();
       reader.onload = (e) => {
         setImagePreview(e.target?.result as string);
@@ -67,15 +73,23 @@ const AdminPage = () => {
   };
 
   const uploadImage = async (file: File): Promise<string> => {
-    // In a real application, this would upload to a server or cloud storage
-    // For now, we'll use a placeholder URL or base64 data
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        resolve(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    });
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}.${fileExt}`;
+    const filePath = `products/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('product-images')
+      .upload(filePath, file);
+
+    if (uploadError) {
+      throw uploadError;
+    }
+
+    const { data } = supabase.storage
+      .from('product-images')
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
   };
 
   const resetForm = () => {
@@ -88,7 +102,7 @@ const AdminPage = () => {
       storage: '',
       display: '',
       condition: 'Refurbished',
-      inStock: true,
+      in_stock: true,
       image: ''
     });
     setSelectedFile(null);
@@ -99,51 +113,46 @@ const AdminPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    let imageUrl = formData.image;
-    
-    // If a new file was selected, upload it
-    if (selectedFile) {
-      imageUrl = await uploadImage(selectedFile);
-    }
+    setUploading(true);
 
-    const newProduct: Product = {
-      id: editingProduct ? editingProduct.id : `product_${Date.now()}`,
-      name: formData.name,
-      category: formData.category,
-      price: parseInt(formData.price),
-      image: imageUrl || 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=400&fit=crop&crop=center',
-      specs: {
+    try {
+      let imageUrl = formData.image;
+
+      // If a new file was selected, upload it
+      if (selectedFile) {
+        imageUrl = await uploadImage(selectedFile);
+      }
+
+      const productData = {
+        name: formData.name,
+        category: formData.category,
+        price: parseInt(formData.price),
+        image: imageUrl || 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=400&fit=crop&crop=center',
         processor: formData.processor,
         ram: formData.ram,
         storage: formData.storage,
-        display: formData.display
-      },
-      condition: formData.condition,
-      inStock: formData.inStock,
-      dateAdded: editingProduct ? editingProduct.dateAdded : new Date().toISOString().split('T')[0]
-    };
+        display: formData.display,
+        condition: formData.condition,
+        in_stock: formData.in_stock,
+        date_added: editingProduct ? editingProduct.date_added : new Date().toISOString().split('T')[0]
+      };
 
-    let updatedProducts;
-    if (editingProduct) {
-      updatedProducts = products.map(p => p.id === editingProduct.id ? newProduct : p);
-    } else {
-      updatedProducts = [...products, newProduct];
+      if (editingProduct) {
+        await updateProduct(editingProduct.id, productData);
+      } else {
+        await addProduct(productData);
+      }
+
+      resetForm();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to save product. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
     }
-
-    setProducts(updatedProducts);
-    
-    // Update localStorage to persist changes
-    localStorage.setItem('plugtech-products', JSON.stringify(updatedProducts));
-    
-    // Trigger a storage event to update other pages
-    window.dispatchEvent(new StorageEvent('storage', {
-      key: 'plugtech-products',
-      newValue: JSON.stringify(updatedProducts)
-    }));
-
-    resetForm();
-    alert('Product saved successfully! Changes will appear on the main site.');
   };
 
   const handleEdit = (product: Product) => {
@@ -152,33 +161,21 @@ const AdminPage = () => {
       name: product.name,
       category: product.category,
       price: product.price.toString(),
-      processor: product.specs.processor,
-      ram: product.specs.ram,
-      storage: product.specs.storage,
-      display: product.specs.display,
+      processor: product.processor,
+      ram: product.ram,
+      storage: product.storage,
+      display: product.display,
       condition: product.condition,
-      inStock: product.inStock,
+      in_stock: product.in_stock,
       image: product.image
     });
     setImagePreview(product.image);
     setShowAddForm(true);
   };
 
-  const handleDelete = (productId: string) => {
+  const handleDelete = async (productId: string) => {
     if (confirm('Are you sure you want to delete this product?')) {
-      const updatedProducts = products.filter(p => p.id !== productId);
-      setProducts(updatedProducts);
-      
-      // Update localStorage
-      localStorage.setItem('plugtech-products', JSON.stringify(updatedProducts));
-      
-      // Trigger storage event
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: 'plugtech-products',
-        newValue: JSON.stringify(updatedProducts)
-      }));
-      
-      alert('Product deleted successfully!');
+      await deleteProduct(productId);
     }
   };
 
@@ -188,45 +185,19 @@ const AdminPage = () => {
     product.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (!isAuthenticated) {
+  if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        
-        <div className="container mx-auto px-4 py-16">
-          <div className="max-w-md mx-auto">
-            <div className="bg-card border border-border rounded-lg p-8 shadow-lg">
-              <h1 className="text-2xl font-bold text-foreground mb-6 text-center">Admin Access</h1>
-              
-              <form onSubmit={handleLogin}>
-                <div className="mb-6">
-                  <label htmlFor="password" className="block text-sm font-medium text-foreground mb-2">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    required
-                  />
-                </div>
-                
-                <button
-                  type="submit"
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2 rounded-lg transition-colors duration-200"
-                >
-                  Login
-                </button>
-              </form>
-            </div>
-          </div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
         </div>
-        
-        <Footer />
       </div>
     );
+  }
+
+  if (!user || !isAdmin) {
+    return null; // Will redirect via useEffect
   }
 
   return (
@@ -239,13 +210,22 @@ const AdminPage = () => {
             <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Admin Panel</h1>
             <p className="text-muted-foreground text-sm sm:text-base">Manage products and website content</p>
           </div>
-          <button
-            onClick={() => setShowAddForm(true)}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg flex items-center gap-2 text-sm sm:text-base w-full sm:w-auto justify-center"
-          >
-            <Plus className="w-4 h-4" />
-            Add Product
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setShowAddForm(true)}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg flex items-center gap-2 text-sm sm:text-base"
+            >
+              <Plus className="w-4 h-4" />
+              Add Product
+            </button>
+            <button
+              onClick={handleSignOut}
+              className="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-2 rounded-lg flex items-center gap-2 text-sm sm:text-base"
+            >
+              <LogOut className="w-4 h-4" />
+              Sign Out
+            </button>
+          </div>
         </div>
 
         {/* Add/Edit Product Form */}
@@ -369,7 +349,7 @@ const AdminPage = () => {
                     </div>
                   )}
                   <div className="text-xs text-muted-foreground">
-                    Or paste an image URL below:
+                    Upload an image file or paste an image URL below:
                   </div>
                   <input
                     type="url"
@@ -385,17 +365,25 @@ const AdminPage = () => {
                 <input
                   type="checkbox"
                   id="inStock"
-                  checked={formData.inStock}
-                  onChange={(e) => setFormData(prev => ({ ...prev, inStock: e.target.checked }))}
+                  checked={formData.in_stock}
+                  onChange={(e) => setFormData(prev => ({ ...prev, in_stock: e.target.checked }))}
                   className="rounded"
                 />
                 <label htmlFor="inStock" className="text-sm text-foreground">In Stock</label>
               </div>
 
               <div className="md:col-span-2 flex flex-col sm:flex-row gap-4 pt-4">
-                <button type="submit" className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2 rounded-lg flex items-center gap-2 justify-center">
-                  <Save className="w-4 h-4" />
-                  {editingProduct ? 'Update Product' : 'Add Product'}
+                <button 
+                  type="submit" 
+                  disabled={uploading}
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2 rounded-lg flex items-center gap-2 justify-center disabled:opacity-50"
+                >
+                  {uploading ? (
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4" />
+                  )}
+                  {uploading ? 'Saving...' : (editingProduct ? 'Update Product' : 'Add Product')}
                 </button>
                 <button type="button" onClick={resetForm} className="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-6 py-2 rounded-lg">
                   Cancel
@@ -462,11 +450,11 @@ const AdminPage = () => {
                     </td>
                     <td className="px-2 sm:px-4 py-3">
                       <span className={`inline-flex px-2 py-1 text-xs rounded-full ${
-                        product.inStock 
+                        product.in_stock 
                           ? 'bg-green-100 text-green-800' 
                           : 'bg-red-100 text-red-800'
                       }`}>
-                        {product.inStock ? 'In Stock' : 'Out of Stock'}
+                        {product.in_stock ? 'In Stock' : 'Out of Stock'}
                       </span>
                     </td>
                     <td className="px-2 sm:px-4 py-3">
@@ -492,13 +480,13 @@ const AdminPage = () => {
           </div>
         </div>
 
-        {/* Storage Information */}
+        {/* Database Information */}
         <div className="mt-8 bg-muted/50 rounded-lg p-4">
-          <h3 className="font-semibold text-foreground mb-2">Product Storage Information</h3>
+          <h3 className="font-semibold text-foreground mb-2">Database Information</h3>
           <p className="text-sm text-muted-foreground">
-            Products are currently stored in browser localStorage and the products.json file. 
-            When you add or edit products here, they will immediately appear on the main website. 
-            For production deployment, consider implementing a proper database solution.
+            Products are now stored in your Supabase database with proper authentication and security. 
+            Only authenticated admin users can manage products. All changes are saved to the database 
+            and will persist across sessions.
           </p>
         </div>
       </div>
