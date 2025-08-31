@@ -100,11 +100,11 @@ const Footer = () => {
                 <div>
                   <div className="flex justify-between">
                     <span>Mon - Sat:</span>
-                    <span>8AM - 7PM</span>
+                    <span>7AM - 9PM</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Sunday:</span>
-                    <span>10AM - 5PM</span>
+                    <span>Closed</span>
                   </div>
                 </div>
               </li>
