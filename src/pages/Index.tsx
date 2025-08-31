@@ -7,6 +7,7 @@ import ShoppingCart from '../components/ShoppingCart';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { useProducts } from '../hooks/useProducts';
 import { Product, CartItem } from '@/types/product';
+import ProductCarousel from '../components/ProductCarousel';
 
 const Index = () => {
   const { products, loading } = useProducts();
@@ -108,7 +109,7 @@ const Index = () => {
 
   const featuredProduct = products.find(p => p.name.includes('HP ProBook'));
   const latestProducts = products.slice(0, 8);
-  const laptops = products.filter(p => p.category === 'laptops').slice(0, 4);
+  const laptops = products.filter(p => p.category === 'laptops');
   const gaming = products.filter(p => p.category === 'gaming');
   const desktops = products.filter(p => p.category === 'desktops');
   const monitors = products.filter(p => p.category === 'monitors');
@@ -119,7 +120,7 @@ const Index = () => {
       <Header cartItemsCount={cartItemsCount} onCartOpen={() => setIsCartOpen(true)} />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary/5 to-primary/10 py-12 sm:py-16 lg:py-20">
+      <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div>
@@ -200,19 +201,15 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Latest Products */}
+      {/* Latest Products Carousel */}
       <section className="py-12 sm:py-16 bg-muted/50">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8 sm:mb-12">Latest Products</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-            {latestProducts.map((product) => (
-              <ProductCard 
-                key={product.id} 
-                product={product} 
-                onAddToCart={addToCart}
-              />
-            ))}
-          </div>
+          <ProductCarousel 
+            products={latestProducts}
+            onAddToCart={addToCart}
+            autoScroll={true}
+          />
           <div className="text-center mt-8">
             <a href="/category/laptops" className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg transition-colors duration-200 inline-block font-medium">
               View All Products
@@ -221,7 +218,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Laptops Section */}
+      {/* Laptops Carousel */}
       <section className="py-16">
         <div className="container-custom">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
@@ -230,19 +227,14 @@ const Index = () => {
               View All Laptops →
             </a>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
-            {laptops.map((product) => (
-              <ProductCard 
-                key={product.id} 
-                product={product} 
-                onAddToCart={addToCart}
-              />
-            ))}
-          </div>
+          <ProductCarousel 
+            products={laptops}
+            onAddToCart={addToCart}
+          />
         </div>
       </section>
 
-      {/* Gaming Section */}
+      {/* Gaming Carousel */}
       <section className="py-16 bg-muted/50">
         <div className="container-custom">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
@@ -251,15 +243,10 @@ const Index = () => {
               View All Gaming →
             </a>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
-            {gaming.map((product) => (
-              <ProductCard 
-                key={product.id} 
-                product={product} 
-                onAddToCart={addToCart}
-              />
-            ))}
-          </div>
+          <ProductCarousel 
+            products={gaming}
+            onAddToCart={addToCart}
+          />
         </div>
       </section>
 
@@ -275,26 +262,10 @@ const Index = () => {
                   View All →
                 </a>
               </div>
-              <div className="grid grid-cols-1 gap-4">
-                {desktops.map((product) => (
-                  <div key={product.id} className="flex gap-4 p-4 border border-border rounded-lg hover:shadow-md transition-shadow duration-200">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md bg-muted flex-shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-sm mb-1 line-clamp-2">{product.name}</h3>
-                      <p className="text-primary font-bold mb-2">KSh {product.price.toLocaleString()}</p>
-                      <WhatsAppButton
-                        productName={product.name}
-                        productPrice={product.price}
-                        className="text-xs px-3 py-1"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <ProductCarousel 
+                products={desktops.slice(0, 3)}
+                onAddToCart={addToCart}
+              />
             </div>
 
             {/* Monitors */}
@@ -305,32 +276,16 @@ const Index = () => {
                   View All →
                 </a>
               </div>
-              <div className="grid grid-cols-1 gap-4">
-                {monitors.map((product) => (
-                  <div key={product.id} className="flex gap-4 p-4 border border-border rounded-lg hover:shadow-md transition-shadow duration-200">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md bg-muted flex-shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-sm mb-1 line-clamp-2">{product.name}</h3>
-                      <p className="text-primary font-bold mb-2">KSh {product.price.toLocaleString()}</p>
-                      <WhatsAppButton
-                        productName={product.name}
-                        productPrice={product.price}
-                        className="text-xs px-3 py-1"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <ProductCarousel 
+                products={monitors.slice(0, 3)}
+                onAddToCart={addToCart}
+              />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Accessories */}
+      {/* Accessories Carousel */}
       <section className="py-16 bg-muted/50">
         <div className="container-custom">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
@@ -339,15 +294,10 @@ const Index = () => {
               View All Accessories →
             </a>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-            {accessories.map((product) => (
-              <ProductCard 
-                key={product.id} 
-                product={product} 
-                onAddToCart={addToCart}
-              />
-            ))}
-          </div>
+          <ProductCarousel 
+            products={accessories}
+            onAddToCart={addToCart}
+          />
         </div>
       </section>
 

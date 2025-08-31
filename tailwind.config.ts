@@ -58,6 +58,9 @@ export default {
 				'heading': ['var(--font-heading)'],
 				'body': ['var(--font-body)'],
 			},
+			animation: {
+				'scroll': 'scroll 20s linear infinite',
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],

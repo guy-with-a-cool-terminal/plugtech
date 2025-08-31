@@ -1,5 +1,6 @@
 
 import WhatsAppButton from './WhatsAppButton';
+import CountdownTimer from './CountdownTimer';
 import { Product } from '@/types/product';
 
 interface ProductCardProps {
@@ -8,14 +9,29 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
+  // Create a mock offer end date (7 days from now) for products with "offer" in description
+  const hasOffer = product.description?.toLowerCase().includes('offer') || 
+                   product.description?.toLowerCase().includes('discount') ||
+                   product.name.toLowerCase().includes('offer');
+  
+  const offerEndDate = new Date();
+  offerEndDate.setDate(offerEndDate.getDate() + 7); // 7 days from now
+
   return (
     <div className="product-card">
       <div className="relative">
+        {hasOffer && (
+          <div className="offer-badge">
+            Special Offer!
+          </div>
+        )}
+        
         <img
           src={product.image}
           alt={product.name}
           className="product-image"
         />
+        
         {!product.in_stock && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <span className="text-white font-semibold bg-red-600 px-3 py-1 rounded">
@@ -23,15 +39,6 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
             </span>
           </div>
         )}
-        <div className="absolute top-3 right-3">
-          <span className={`px-2 py-1 text-xs font-medium rounded ${
-            product.condition === 'New' 
-              ? 'bg-green-100 text-green-800' 
-              : 'bg-blue-100 text-blue-800'
-          }`}>
-            {product.condition}
-          </span>
-        </div>
       </div>
       
       <div className="p-4">
@@ -55,6 +62,13 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         <div className="product-price">
           KSh {product.price.toLocaleString()}
         </div>
+        
+        {hasOffer && (
+          <div className="mb-3 flex items-center gap-2">
+            <span className="text-xs font-medium">Offer ends in:</span>
+            <CountdownTimer endDate={offerEndDate} />
+          </div>
+        )}
         
         <div className="flex gap-2">
           <WhatsAppButton

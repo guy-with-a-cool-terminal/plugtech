@@ -3,36 +3,36 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Professional Design System for Plug Tech Business */
+/* Madiba-Inspired Design System */
 @layer base {
   :root {
-    /* Brand Colors - Professional Blue/Gray Scheme */
-    --primary: 210 100% 56%; /* Professional Blue #1e40af */
+    /* Brand Colors - Orange/Red and Dark Theme */
+    --primary: 14 100% 57%; /* Orange-Red #ff4500 */
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 210 100% 50%;
+    --primary-hover: 14 100% 50%;
     
-    --secondary: 215 16% 47%; /* Professional Gray #6b7280 */
+    --secondary: 220 13% 18%; /* Dark Gray #2d3748 */
     --secondary-foreground: 0 0% 100%;
-    --secondary-hover: 215 16% 40%;
+    --secondary-hover: 220 13% 25%;
     
     --accent: 142 76% 36%; /* WhatsApp Green #25d366 */
     --accent-foreground: 0 0% 100%;
     --accent-hover: 142 76% 30%;
     
-    --background: 0 0% 100%;
-    --foreground: 215 25% 27%; /* Dark Gray #374151 */
+    --background: 0 0% 98%; /* Light gray background */
+    --foreground: 220 13% 18%; /* Dark text */
     
-    --muted: 210 40% 96%;
+    --muted: 210 40% 95%;
     --muted-foreground: 215 16% 47%;
     
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 210 100% 56%;
+    --ring: 14 100% 57%;
     
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 27%;
+    --card-foreground: 220 13% 18%;
     
-    --radius: 0.5rem;
+    --radius: 0.75rem;
     
     /* Professional Typography Scale */
     --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
@@ -54,10 +54,10 @@
   }
 }
 
-/* Professional Component Variants */
+/* Enhanced Component Variants */
 @layer components {
   .btn-primary {
-    @apply bg-primary text-primary-foreground hover:bg-primary-hover px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md;
+    @apply bg-primary text-primary-foreground hover:bg-primary-hover px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg;
   }
   
   .btn-secondary {
@@ -69,7 +69,7 @@
   }
   
   .product-card {
-    @apply bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1;
+    @apply bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 relative;
   }
   
   .product-image {
@@ -84,12 +84,20 @@
     @apply text-xl font-bold text-primary mb-3;
   }
   
+  .offer-badge {
+    @apply absolute top-3 left-3 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold z-10;
+  }
+  
+  .countdown-timer {
+    @apply bg-secondary text-secondary-foreground px-2 py-1 rounded text-xs font-mono;
+  }
+  
   .nav-link {
     @apply text-foreground hover:text-primary font-medium transition-colors duration-200 px-3 py-2 rounded-md hover:bg-muted;
   }
   
   .hero-section {
-    @apply bg-gradient-to-br from-primary/5 to-secondary/5 py-16;
+    @apply bg-gradient-to-br from-primary/10 to-secondary/10 py-16;
   }
   
   .section-title {
@@ -99,9 +107,13 @@
   .contact-link {
     @apply flex items-center gap-2 text-foreground hover:text-primary transition-colors duration-200;
   }
+  
+  .carousel-container {
+    @apply relative overflow-hidden rounded-xl;
+  }
 }
 
-/* Utility Classes */
+/* Enhanced Utility Classes */
 @layer utilities {
   .line-clamp-3 {
     display: -webkit-box;
@@ -112,5 +124,14 @@
   
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .animate-scroll {
+    animation: scroll 20s linear infinite;
+  }
+  
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
   }
 }
