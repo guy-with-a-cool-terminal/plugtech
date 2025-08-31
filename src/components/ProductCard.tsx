@@ -1,90 +1,80 @@
 
-import WhatsAppButton from './WhatsAppButton';
-import CountdownTimer from './CountdownTimer';
+import { ShoppingCart, Eye } from 'lucide-react';
 import { Product } from '@/types/product';
+import CountdownTimer from './CountdownTimer';
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart?: (product: Product) => void;
+  onAddToCart: (product: Product) => void;
 }
 
 const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
-  // Create a mock offer end date (7 days from now) for products with "offer" in description
-  const hasOffer = product.description?.toLowerCase().includes('offer') || 
-                   product.description?.toLowerCase().includes('discount') ||
-                   product.name.toLowerCase().includes('offer');
-  
-  const offerEndDate = new Date();
-  offerEndDate.setDate(offerEndDate.getDate() + 7); // 7 days from now
+  // Check if product has an active offer (assuming products with discount have offers)
+  const hasOffer = product.price < 50000; // Example: products under 50k have offers
+  const offerEndDate = hasOffer ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null; // 24 hours from now
 
   return (
-    <div className="product-card">
-      <div className="relative">
-        {hasOffer && (
-          <div className="offer-badge">
-            Special Offer!
-          </div>
-        )}
-        
+    <div className="bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 group">
+      <div className="relative overflow-hidden">
         <img
           src={product.image}
           alt={product.name}
-          className="product-image"
+          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-200"
         />
-        
-        {!product.in_stock && (
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <span className="text-white font-semibold bg-red-600 px-3 py-1 rounded">
-              Out of Stock
-            </span>
+        {product.in_stock ? (
+          <span className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+            In Stock
+          </span>
+        ) : (
+          <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+            Out of Stock
+          </span>
+        )}
+        {hasOffer && (
+          <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+            Offer!
           </div>
         )}
       </div>
-      
+
       <div className="p-4">
-        <h3 className="product-title">
+        <h3 className="font-semibold text-foreground mb-2 line-clamp-2 min-h-[3rem]">
           {product.name}
         </h3>
         
-        <div className="text-xs text-muted-foreground mb-3 space-y-1">
-          {product.processor !== 'N/A' && (
-            <div>Processor: {product.processor}</div>
-          )}
-          {product.ram !== 'N/A' && (
-            <div>RAM: {product.ram}</div>
-          )}
-          {product.storage !== 'N/A' && (
-            <div>Storage: {product.storage}</div>
-          )}
-          <div>Display: {product.display}</div>
+        <div className="space-y-1 text-sm text-muted-foreground mb-3">
+          <p><span className="font-medium">Processor:</span> {product.processor}</p>
+          <p><span className="font-medium">RAM:</span> {product.ram}</p>
+          <p><span className="font-medium">Storage:</span> {product.storage}</p>
+          <p><span className="font-medium">Display:</span> {product.display}</p>
         </div>
-        
-        <div className="product-price">
-          KSh {product.price.toLocaleString()}
-        </div>
-        
-        {hasOffer && (
-          <div className="mb-3 flex items-center gap-2">
-            <span className="text-xs font-medium">Offer ends in:</span>
+
+        {hasOffer && offerEndDate && (
+          <div className="mb-3">
             <CountdownTimer endDate={offerEndDate} />
           </div>
         )}
-        
-        <div className="flex gap-2">
-          <WhatsAppButton
-            productName={product.name}
-            productPrice={product.price}
-            productUrl={`/product/${product.id}`}
-            className="flex-1 justify-center text-sm"
-          />
-          {onAddToCart && product.in_stock && (
+
+        <div className="flex items-center justify-between">
+          <span className="text-lg font-bold text-primary">
+            KSh {product.price.toLocaleString()}
+          </span>
+          <div className="flex gap-2">
+            <button
+              className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
+              title="Quick view"
+            >
+              <Eye className="w-4 h-4" />
+            </button>
             <button
               onClick={() => onAddToCart(product)}
-              className="px-4 py-2 border border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-lg transition-colors duration-200 text-sm font-medium"
+              disabled={!product.in_stock}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-3 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
             >
+              <ShoppingCart className="w-4 h-4" />
               Add to Cart
             </button>
-          )}
+          </div>
         </div>
       </div>
     </div>
