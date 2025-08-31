@@ -48,13 +48,6 @@ const AdminPage = () => {
     image: ''
   });
 
-  // Redirect if not authenticated or not admin
-  useEffect(() => {
-    if (!authLoading && (!user || !isAdmin)) {
-      navigate('/auth');
-    }
-  }, [user, isAdmin, authLoading, navigate]);
-
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
@@ -113,6 +106,17 @@ const AdminPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check if user is admin before allowing modifications
+    if (!user || !isAdmin) {
+      toast({
+        title: "Access Denied",
+        description: "You need admin privileges to modify products.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setUploading(true);
 
     try {
@@ -156,6 +160,15 @@ const AdminPage = () => {
   };
 
   const handleEdit = (product: Product) => {
+    if (!user || !isAdmin) {
+      toast({
+        title: "Access Denied",
+        description: "You need admin privileges to edit products.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setEditingProduct(product);
     setFormData({
       name: product.name,
@@ -174,6 +187,15 @@ const AdminPage = () => {
   };
 
   const handleDelete = async (productId: string) => {
+    if (!user || !isAdmin) {
+      toast({
+        title: "Access Denied",
+        description: "You need admin privileges to delete products.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (confirm('Are you sure you want to delete this product?')) {
       await deleteProduct(productId);
     }
@@ -185,7 +207,7 @@ const AdminPage = () => {
     product.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (authLoading || loading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -196,10 +218,6 @@ const AdminPage = () => {
     );
   }
 
-  if (!user || !isAdmin) {
-    return null; // Will redirect via useEffect
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -208,28 +226,41 @@ const AdminPage = () => {
         <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Admin Panel</h1>
-            <p className="text-muted-foreground text-sm sm:text-base">Manage products and website content</p>
+            <p className="text-muted-foreground text-sm sm:text-base">
+              {user && isAdmin ? 'Manage products and website content' : 'View products (Admin login required for modifications)'}
+            </p>
           </div>
           <div className="flex gap-2">
-            <button
-              onClick={() => setShowAddForm(true)}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg flex items-center gap-2 text-sm sm:text-base"
-            >
-              <Plus className="w-4 h-4" />
-              Add Product
-            </button>
-            <button
-              onClick={handleSignOut}
-              className="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-2 rounded-lg flex items-center gap-2 text-sm sm:text-base"
-            >
-              <LogOut className="w-4 h-4" />
-              Sign Out
-            </button>
+            {user && isAdmin && (
+              <button
+                onClick={() => setShowAddForm(true)}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg flex items-center gap-2 text-sm sm:text-base"
+              >
+                <Plus className="w-4 h-4" />
+                Add Product
+              </button>
+            )}
+            {user ? (
+              <button
+                onClick={handleSignOut}
+                className="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-2 rounded-lg flex items-center gap-2 text-sm sm:text-base"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate('/auth')}
+                className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-lg flex items-center gap-2 text-sm sm:text-base"
+              >
+                Admin Login
+              </button>
+            )}
           </div>
         </div>
 
-        {/* Add/Edit Product Form */}
-        {showAddForm && (
+        {/* Add/Edit Product Form - Only show if user is admin */}
+        {showAddForm && user && isAdmin && (
           <div className="bg-card border border-border rounded-lg p-4 sm:p-6 mb-8">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg sm:text-xl font-semibold text-foreground">
@@ -424,7 +455,9 @@ const AdminPage = () => {
                   <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Category</th>
                   <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Price</th>
                   <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Stock</th>
-                  <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Actions</th>
+                  {user && isAdmin && (
+                    <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Actions</th>
+                  )}
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -457,22 +490,24 @@ const AdminPage = () => {
                         {product.in_stock ? 'In Stock' : 'Out of Stock'}
                       </span>
                     </td>
-                    <td className="px-2 sm:px-4 py-3">
-                      <div className="flex gap-1 sm:gap-2">
-                        <button
-                          onClick={() => handleEdit(product)}
-                          className="p-1 sm:p-2 text-primary hover:bg-muted rounded-lg"
-                        >
-                          <Edit className="w-3 h-3 sm:w-4 sm:h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(product.id)}
-                          className="p-1 sm:p-2 text-red-600 hover:bg-muted rounded-lg"
-                        >
-                          <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                        </button>
-                      </div>
-                    </td>
+                    {user && isAdmin && (
+                      <td className="px-2 sm:px-4 py-3">
+                        <div className="flex gap-1 sm:gap-2">
+                          <button
+                            onClick={() => handleEdit(product)}
+                            className="p-1 sm:p-2 text-primary hover:bg-muted rounded-lg"
+                          >
+                            <Edit className="w-3 h-3 sm:w-4 sm:h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(product.id)}
+                            className="p-1 sm:p-2 text-red-600 hover:bg-muted rounded-lg"
+                          >
+                            <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -484,9 +519,7 @@ const AdminPage = () => {
         <div className="mt-8 bg-muted/50 rounded-lg p-4">
           <h3 className="font-semibold text-foreground mb-2">Database Information</h3>
           <p className="text-sm text-muted-foreground">
-            Products are now stored in your Supabase database with proper authentication and security. 
-            Only authenticated admin users can manage products. All changes are saved to the database 
-            and will persist across sessions.
+            Products are stored in your Supabase database. {user && isAdmin ? 'As an admin, you can manage products.' : 'Admin login required to manage products.'}
           </p>
         </div>
       </div>
