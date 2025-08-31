@@ -64,7 +64,7 @@ const ContactPage = () => {
               </p>
               <div className="space-y-2">
                 <p className="text-sm text-muted-foreground">
-                  <strong>Landmark:</strong> Near Kencom House
+                  <strong>Landmark:</strong> Opposite Imenti House
                 </p>
                 <p className="text-sm text-muted-foreground">
                   <strong>Parking:</strong> Available nearby
