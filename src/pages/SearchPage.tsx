@@ -34,19 +34,44 @@ const SearchPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
+  // Safely handle localStorage operations
+  const safeLocalStorageGet = (key: string): string | null => {
+    try {
+      return localStorage.getItem(key);
+    } catch (error) {
+      return null;
+    }
+  };
+
+  const safeLocalStorageSet = (key: string, value: string): void => {
+    try {
+      localStorage.setItem(key, value);
+    } catch (error) {
+      // Silently fail if localStorage is not available
+    }
+  };
+
   // Listen for product updates from admin panel
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'plugtech-products' && e.newValue) {
-        const updatedProducts = JSON.parse(e.newValue);
-        setProducts(updatedProducts);
+        try {
+          const updatedProducts = JSON.parse(e.newValue);
+          setProducts(updatedProducts);
+        } catch (error) {
+          // Ignore parsing errors
+        }
       }
     };
 
     // Load products from localStorage if available
-    const savedProducts = localStorage.getItem('plugtech-products');
+    const savedProducts = safeLocalStorageGet('plugtech-products');
     if (savedProducts) {
-      setProducts(JSON.parse(savedProducts));
+      try {
+        setProducts(JSON.parse(savedProducts));
+      } catch (error) {
+        // Use default products if parsing fails
+      }
     }
 
     window.addEventListener('storage', handleStorageChange);
@@ -58,15 +83,19 @@ const SearchPage = () => {
 
   // Load cart from localStorage
   useEffect(() => {
-    const savedCart = localStorage.getItem('plugtech-cart');
+    const savedCart = safeLocalStorageGet('plugtech-cart');
     if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
+      try {
+        setCartItems(JSON.parse(savedCart));
+      } catch (error) {
+        // Use empty cart if parsing fails
+      }
     }
   }, []);
 
   // Save cart to localStorage
   useEffect(() => {
-    localStorage.setItem('plugtech-cart', JSON.stringify(cartItems));
+    safeLocalStorageSet('plugtech-cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
   const addToCart = (product: Product) => {
@@ -137,10 +166,6 @@ const SearchPage = () => {
     );
   });
 
-  console.log('Search query:', query);
-  console.log('Products found:', searchResults.length);
-  console.log('Search results:', searchResults.map(p => p.name));
-
   return (
     <div className="min-h-screen bg-background">
       <Header cartItemsCount={cartItemsCount} onCartOpen={() => setIsCartOpen(true)} />
@@ -148,40 +173,40 @@ const SearchPage = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
-            Search Results for "{query}"
+            Search Results
           </h1>
-          <p className="text-muted-foreground text-sm sm:text-base">
-            Found {searchResults.length} product{searchResults.length !== 1 ? 's' : ''} matching your search.
-          </p>
+          {query && (
+            <p className="text-muted-foreground text-sm sm:text-base">
+              Showing results for "{query}" ({searchResults.length} found)
+            </p>
+          )}
         </div>
 
-        {searchResults.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-            {searchResults.map((product) => (
-              <ProductCard 
-                key={product.id} 
-                product={product} 
-                onAddToCart={addToCart}
-              />
-            ))}
-          </div>
+        {query ? (
+          searchResults.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+              {searchResults.map((product) => (
+                <ProductCard 
+                  key={product.id} 
+                  product={product} 
+                  onAddToCart={addToCart}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <h2 className="text-xl font-semibold text-foreground mb-2">No products found</h2>
+              <p className="text-muted-foreground">
+                No products match your search for "{query}". Try different keywords or check your spelling.
+              </p>
+            </div>
+          )
         ) : (
           <div className="text-center py-16">
-            <h2 className="text-xl font-semibold text-foreground mb-2">No products found</h2>
-            <p className="text-muted-foreground mb-4">
-              Try searching with different keywords or browse our categories.
+            <h2 className="text-xl font-semibold text-foreground mb-2">Enter a search term</h2>
+            <p className="text-muted-foreground">
+              Use the search bar above to find products.
             </p>
-            <div className="flex flex-wrap justify-center gap-4 mt-6">
-              <a href="/category/laptops" className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg transition-colors">
-                Browse Laptops
-              </a>
-              <a href="/category/desktops" className="bg-secondary hover:bg-secondary/80 text-secondary-foreground px-4 py-2 rounded-lg transition-colors">
-                Browse Desktops
-              </a>
-              <a href="/category/gaming" className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg transition-colors">
-                Browse Gaming
-              </a>
-            </div>
           </div>
         )}
       </div>
