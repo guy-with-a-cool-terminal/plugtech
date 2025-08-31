@@ -1,5 +1,5 @@
 
-import { ShoppingCart, Eye } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { Product } from '@/types/product';
 import CountdownTimer from './CountdownTimer';
 import WhatsAppButton from './WhatsAppButton';
@@ -64,29 +64,21 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
             </span>
           </div>
           
-          <div className="space-y-3">
-            <div className="flex gap-2">
-              <button
-                className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors flex-shrink-0"
-                title="Quick view"
-              >
-                <Eye className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => onAddToCart(product)}
-                disabled={!product.in_stock}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm flex-1 justify-center font-medium"
-              >
-                <ShoppingCart className="w-4 h-4" />
-                <span>Add to Cart</span>
-              </button>
-            </div>
+          <div className="space-y-2">
+            <button
+              onClick={() => onAddToCart(product)}
+              disabled={!product.in_stock}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+            >
+              <ShoppingCart className="w-4 h-4" />
+              <span>Add to Cart</span>
+            </button>
             
             <WhatsAppButton
               productName={product.name}
               productPrice={product.price}
               productUrl={`/product/${product.id}`}
-              className="w-full bg-accent hover:bg-accent/90 text-accent-foreground px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm font-medium"
+              className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm font-medium"
             />
           </div>
         </div>
