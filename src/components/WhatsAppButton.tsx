@@ -20,7 +20,7 @@ const WhatsAppButton = ({
   cartItems, 
   className = "" 
 }: WhatsAppButtonProps) => {
-  const phoneNumber = "254711483989"; // Updated phone number without extra digit
+  const phoneNumber = "254711483989";
 
   const generateMessage = () => {
     if (cartItems && cartItems.length > 0) {
@@ -76,7 +76,7 @@ const WhatsAppButton = ({
   return (
     <button
       onClick={openWhatsApp}
-      className={`btn-whatsapp ${className}`}
+      className={className}
     >
       <MessageCircle className="w-4 h-4" />
       {cartItems ? 'WhatsApp Checkout' : 'Quick Order'}
