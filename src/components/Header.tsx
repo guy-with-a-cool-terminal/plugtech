@@ -38,9 +38,9 @@ const Header = ({ cartItemsCount = 0, onCartOpen }: HeaderProps) => {
         <div className="container-custom">
           <div className="flex justify-between items-center text-sm">
             <div className="flex items-center gap-6">
-              <a href="tel:+2547114483989" className="contact-link text-primary-foreground hover:text-primary-foreground/80">
+              <a href="tel:+254711448398" className="contact-link text-primary-foreground hover:text-primary-foreground/80">
                 <Phone className="w-4 h-4" />
-                <span className="hidden sm:inline">+254 711 448 3989</span>
+                <span className="hidden sm:inline">+254 711 448 398</span>
               </a>
               <div className="hidden md:flex items-center gap-4">
                 <a 
@@ -112,17 +112,19 @@ const Header = ({ cartItemsCount = 0, onCartOpen }: HeaderProps) => {
             </form>
 
             {/* Cart */}
-            <button
-              onClick={onCartOpen}
-              className="relative p-2 hover:bg-muted rounded-lg transition-colors duration-200"
-            >
-              <ShoppingCart className="w-5 h-5" />
-              {cartItemsCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {cartItemsCount}
-                </span>
-              )}
-            </button>
+            {onCartOpen && (
+              <button
+                onClick={onCartOpen}
+                className="relative p-2 hover:bg-muted rounded-lg transition-colors duration-200"
+              >
+                <ShoppingCart className="w-5 h-5" />
+                {cartItemsCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {cartItemsCount}
+                  </span>
+                )}
+              </button>
+            )}
 
             {/* Mobile Menu Button */}
             <button

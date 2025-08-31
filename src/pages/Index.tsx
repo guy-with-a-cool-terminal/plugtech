@@ -83,11 +83,36 @@ const Index = () => {
   const cartItemsCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const categories = [
-    { name: 'Laptops', icon: Laptop, count: products.filter(p => p.category === 'laptops').length },
-    { name: 'Desktops', icon: HardDrive, count: products.filter(p => p.category === 'desktops').length },
-    { name: 'Gaming', icon: Gamepad2, count: products.filter(p => p.category === 'gaming').length },
-    { name: 'Monitors', icon: Monitor, count: products.filter(p => p.category === 'monitors').length },
-    { name: 'Accessories', icon: Headphones, count: products.filter(p => p.category === 'accessories').length },
+    { 
+      name: 'Laptops', 
+      icon: Laptop, 
+      count: products.filter(p => p.category === 'laptops').length,
+      image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&h=150&fit=crop&crop=center'
+    },
+    { 
+      name: 'Desktops', 
+      icon: HardDrive, 
+      count: products.filter(p => p.category === 'desktops').length,
+      image: 'https://images.unsplash.com/photo-1547082299-de196ea013d6?w=200&h=150&fit=crop&crop=center'
+    },
+    { 
+      name: 'Gaming', 
+      icon: Gamepad2, 
+      count: products.filter(p => p.category === 'gaming').length,
+      image: 'https://images.unsplash.com/photo-1593640393637-2ed698cb2682?w=200&h=150&fit=crop&crop=center'
+    },
+    { 
+      name: 'Monitors', 
+      icon: Monitor, 
+      count: products.filter(p => p.category === 'monitors').length,
+      image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=200&h=150&fit=crop&crop=center'
+    },
+    { 
+      name: 'Accessories', 
+      icon: Headphones, 
+      count: products.filter(p => p.category === 'accessories').length,
+      image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=200&h=150&fit=crop&crop=center'
+    },
   ];
 
   const featuredProduct = products.find(p => p.id === 'hp-probook-440-g10');
@@ -105,25 +130,25 @@ const Index = () => {
       {/* Hero Section */}
       <section className="hero-section">
         <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div>
-              <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
                 Quality Computer Hardware at 
                 <span className="text-primary"> Best Prices</span>
               </h1>
-              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+              <p className="text-base lg:text-lg text-muted-foreground mb-8 leading-relaxed">
                 Find the perfect laptop, desktop, or computer accessory for your needs. 
                 We offer both new and refurbished computers with guaranteed quality and competitive prices.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <WhatsAppButton className="btn-primary" />
+                <WhatsAppButton className="btn-primary text-center" />
                 <a href="/category/laptops" className="btn-secondary text-center">
                   Browse Laptops
                 </a>
               </div>
 
-              <div className="flex items-center gap-6 text-sm text-muted-foreground">
+              <div className="flex flex-wrap items-center gap-4 lg:gap-6 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                   <span>Quality Guaranteed</span>
@@ -154,20 +179,29 @@ const Index = () => {
       <section className="py-16">
         <div className="container-custom">
           <h2 className="section-title">Shop by Category</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
             {categories.map((category) => {
               const Icon = category.icon;
               return (
                 <a
                   key={category.name}
                   href={`/category/${category.name.toLowerCase()}`}
-                  className="group bg-card border border-border rounded-lg p-6 text-center hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                  className="group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                 >
-                  <div className="bg-primary/10 w-16 h-16 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
-                    <Icon className="w-8 h-8 text-primary group-hover:text-primary-foreground" />
+                  <div className="relative h-32 sm:h-40">
+                    <img
+                      src={category.image}
+                      alt={category.name}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                      <Icon className="w-8 h-8 sm:w-12 sm:h-12 text-white" />
+                    </div>
                   </div>
-                  <h3 className="font-semibold text-foreground mb-1">{category.name}</h3>
-                  <p className="text-sm text-muted-foreground">{category.count} Products</p>
+                  <div className="p-3 sm:p-4 text-center">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm sm:text-base">{category.name}</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground">{category.count} Products</p>
+                  </div>
                 </a>
               );
             })}
@@ -179,7 +213,7 @@ const Index = () => {
       <section className="py-16 bg-muted/50">
         <div className="container-custom">
           <h2 className="section-title">Latest Products</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
             {latestProducts.map((product) => (
               <ProductCard 
                 key={product.id} 
@@ -189,7 +223,7 @@ const Index = () => {
             ))}
           </div>
           <div className="text-center mt-8">
-            <a href="/products" className="btn-primary">
+            <a href="/category/laptops" className="btn-primary">
               View All Products
             </a>
           </div>
@@ -199,13 +233,13 @@ const Index = () => {
       {/* Laptops Section */}
       <section className="py-16">
         <div className="container-custom">
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <h2 className="text-2xl font-bold text-foreground">Popular Laptops</h2>
             <a href="/category/laptops" className="text-primary hover:text-primary-hover font-medium">
               View All Laptops →
             </a>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
             {laptops.map((product) => (
               <ProductCard 
                 key={product.id} 
@@ -220,13 +254,13 @@ const Index = () => {
       {/* Gaming Section */}
       <section className="py-16 bg-muted/50">
         <div className="container-custom">
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <h2 className="text-2xl font-bold text-foreground">Gaming Computers</h2>
             <a href="/category/gaming" className="text-primary hover:text-primary-hover font-medium">
               View All Gaming →
             </a>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
             {gaming.map((product) => (
               <ProductCard 
                 key={product.id} 
@@ -241,10 +275,10 @@ const Index = () => {
       {/* Desktops & Monitors */}
       <section className="py-16">
         <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             {/* Desktops */}
             <div>
-              <div className="flex justify-between items-center mb-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
                 <h2 className="text-xl font-bold text-foreground">Desktop Computers</h2>
                 <a href="/category/desktops" className="text-primary hover:text-primary-hover font-medium text-sm">
                   View All →
@@ -256,15 +290,15 @@ const Index = () => {
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-20 h-20 object-cover rounded-md bg-muted"
+                      className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md bg-muted flex-shrink-0"
                     />
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <h3 className="font-medium text-sm mb-1 line-clamp-2">{product.name}</h3>
-                      <p className="text-primary font-bold">KSh {product.price.toLocaleString()}</p>
+                      <p className="text-primary font-bold mb-2">KSh {product.price.toLocaleString()}</p>
                       <WhatsAppButton
                         productName={product.name}
                         productPrice={product.price}
-                        className="mt-2 text-xs px-3 py-1"
+                        className="text-xs px-3 py-1"
                       />
                     </div>
                   </div>
@@ -274,7 +308,7 @@ const Index = () => {
 
             {/* Monitors */}
             <div>
-              <div className="flex justify-between items-center mb-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
                 <h2 className="text-xl font-bold text-foreground">Monitors</h2>
                 <a href="/category/monitors" className="text-primary hover:text-primary-hover font-medium text-sm">
                   View All →
@@ -286,15 +320,15 @@ const Index = () => {
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-20 h-20 object-cover rounded-md bg-muted"
+                      className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md bg-muted flex-shrink-0"
                     />
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <h3 className="font-medium text-sm mb-1 line-clamp-2">{product.name}</h3>
-                      <p className="text-primary font-bold">KSh {product.price.toLocaleString()}</p>
+                      <p className="text-primary font-bold mb-2">KSh {product.price.toLocaleString()}</p>
                       <WhatsAppButton
                         productName={product.name}
                         productPrice={product.price}
-                        className="mt-2 text-xs px-3 py-1"
+                        className="text-xs px-3 py-1"
                       />
                     </div>
                   </div>
@@ -308,13 +342,13 @@ const Index = () => {
       {/* Accessories */}
       <section className="py-16 bg-muted/50">
         <div className="container-custom">
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <h2 className="text-2xl font-bold text-foreground">Computer Accessories</h2>
             <a href="/category/accessories" className="text-primary hover:text-primary-hover font-medium">
               View All Accessories →
             </a>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {accessories.map((product) => (
               <ProductCard 
                 key={product.id} 

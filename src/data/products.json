@@ -6,7 +6,7 @@
       "name": "HP ProBook 440 G10 Intel Core i7 13th Gen 8GB RAM 512GB SSD 14 Inches FHD Display",
       "category": "laptops",
       "price": 99999,
-      "image": "/api/placeholder/300/300",
+      "image": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop&crop=center",
       "specs": {
         "processor": "Intel Core i7 13th Gen",
         "ram": "8GB",
@@ -19,42 +19,58 @@
     },
     {
       "id": "dell-latitude-7420",
-      "name": "Dell Latitude 7420 Intel Core i5 11th Gen 16GB RAM 256GB SSD 14 Inches FHD Display",
+      "name": "Dell Latitude 7420 Intel Core i5 11th Gen 16GB RAM 256GB SSD 14 Inches FHD",
       "category": "laptops",
       "price": 85000,
-      "image": "/api/placeholder/300/300",
+      "image": "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=400&h=300&fit=crop&crop=center",
       "specs": {
         "processor": "Intel Core i5 11th Gen",
         "ram": "16GB",
         "storage": "256GB SSD",
-        "display": "14 Inches FHD Display"
+        "display": "14 Inches FHD"
       },
       "condition": "Refurbished",
       "inStock": true,
-      "dateAdded": "2025-08-31"
+      "dateAdded": "2025-08-30"
     },
     {
       "id": "lenovo-thinkpad-t490",
-      "name": "Lenovo ThinkPad T490 Core i5 8th Gen 8GB RAM 256GB SSD 14 Inches FHD Display",
+      "name": "Lenovo ThinkPad T490 Core i5 8th Gen 8GB RAM 256GB SSD 14 Inches FHD",
       "category": "laptops",
       "price": 65000,
-      "image": "/api/placeholder/300/300",
+      "image": "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=300&fit=crop&crop=center",
       "specs": {
         "processor": "Intel Core i5 8th Gen",
         "ram": "8GB",
         "storage": "256GB SSD",
-        "display": "14 Inches FHD Display"
+        "display": "14 Inches FHD"
       },
       "condition": "Refurbished",
+      "inStock": true,
+      "dateAdded": "2025-08-29"
+    },
+    {
+      "id": "macbook-air-m1",
+      "name": "Apple MacBook Air M1 Chip 8GB RAM 256GB SSD 13 Inches Retina Display",
+      "category": "laptops",
+      "price": 125000,
+      "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=300&fit=crop&crop=center",
+      "specs": {
+        "processor": "Apple M1 Chip",
+        "ram": "8GB",
+        "storage": "256GB SSD",
+        "display": "13 Inches Retina"
+      },
+      "condition": "New",
       "inStock": true,
       "dateAdded": "2025-08-31"
     },
     {
       "id": "hp-prodesk-400-g6",
-      "name": "HP ProDesk 400 G6 Intel Core i5 9th Gen 8GB RAM 500GB HDD Desktop",
+      "name": "HP ProDesk 400 G6 Intel Core i5 9th Gen 8GB RAM 500GB HDD Desktop Computer",
       "category": "desktops",
       "price": 45000,
-      "image": "/api/placeholder/300/300",
+      "image": "https://images.unsplash.com/photo-1547082299-de196ea013d6?w=400&h=300&fit=crop&crop=center",
       "specs": {
         "processor": "Intel Core i5 9th Gen",
         "ram": "8GB",
@@ -63,14 +79,14 @@
       },
       "condition": "Refurbished",
       "inStock": true,
-      "dateAdded": "2025-08-31"
+      "dateAdded": "2025-08-28"
     },
     {
       "id": "dell-optiplex-7070",
       "name": "Dell OptiPlex 7070 Intel Core i7 9th Gen 16GB RAM 512GB SSD Desktop",
       "category": "desktops",
       "price": 75000,
-      "image": "/api/placeholder/300/300",
+      "image": "https://images.unsplash.com/photo-1593640495253-23196b27a87f?w=400&h=300&fit=crop&crop=center",
       "specs": {
         "processor": "Intel Core i7 9th Gen",
         "ram": "16GB",
@@ -79,14 +95,14 @@
       },
       "condition": "Refurbished",
       "inStock": true,
-      "dateAdded": "2025-08-31"
+      "dateAdded": "2025-08-27"
     },
     {
       "id": "hp-victus-gaming",
       "name": "HP Victus Gaming Laptop Core i7 GTX 1650 16GB RAM 512GB SSD 15.6 Inches FHD",
       "category": "gaming",
       "price": 120000,
-      "image": "/api/placeholder/300/300",
+      "image": "https://images.unsplash.com/photo-1593640393637-2ed698cb2682?w=400&h=300&fit=crop&crop=center",
       "specs": {
         "processor": "Intel Core i7",
         "ram": "16GB",
@@ -95,19 +111,19 @@
       },
       "condition": "New",
       "inStock": true,
-      "dateAdded": "2025-08-31"
+      "dateAdded": "2025-08-30"
     },
     {
       "id": "lenovo-legion-5",
-      "name": "Lenovo Legion 5 Gaming Laptop RTX 3060 16GB RAM 1TB SSD 15.6 Inches FHD",
+      "name": "Lenovo Legion 5 Gaming Laptop RTX 3060 16GB RAM 1TB SSD 15.6 Inches 165Hz",
       "category": "gaming",
       "price": 180000,
-      "image": "/api/placeholder/300/300",
+      "image": "https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=400&h=300&fit=crop&crop=center",
       "specs": {
-        "processor": "RTX 3060",
+        "processor": "AMD Ryzen 7",
         "ram": "16GB",
         "storage": "1TB SSD",
-        "display": "15.6 Inches FHD Gaming"
+        "display": "15.6 Inches 165Hz Gaming"
       },
       "condition": "New",
       "inStock": true,
@@ -115,47 +131,47 @@
     },
     {
       "id": "dell-ultrasharp-u2417h",
-      "name": "Dell UltraSharp U2417H 24-inch FHD Monitor IPS Display",
+      "name": "Dell UltraSharp U2417H 24-inch FHD IPS Monitor 1920x1080 USB Hub",
       "category": "monitors",
       "price": 25000,
-      "image": "/api/placeholder/300/300",
+      "image": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400&h=300&fit=crop&crop=center",
       "specs": {
         "processor": "N/A",
         "ram": "N/A",
         "storage": "N/A",
-        "display": "24-inch FHD IPS"
+        "display": "24-inch FHD IPS 1920x1080"
       },
       "condition": "New",
       "inStock": true,
-      "dateAdded": "2025-08-31"
+      "dateAdded": "2025-08-29"
     },
     {
       "id": "hp-elitedisplay-e243",
-      "name": "HP EliteDisplay E243 24-inch IPS Monitor FHD Professional Display",
+      "name": "HP EliteDisplay E243 24-inch IPS Monitor Full HD 1920x1080 VGA HDMI DP",
       "category": "monitors",
       "price": 28000,
-      "image": "/api/placeholder/300/300",
+      "image": "https://images.unsplash.com/photo-1530893609608-32a9af3aa95c?w=400&h=300&fit=crop&crop=center",
       "specs": {
         "processor": "N/A",
         "ram": "N/A",
         "storage": "N/A",
-        "display": "24-inch FHD IPS"
+        "display": "24-inch IPS Full HD"
       },
       "condition": "New",
       "inStock": true,
-      "dateAdded": "2025-08-31"
+      "dateAdded": "2025-08-28"
     },
     {
       "id": "laptop-chargers",
-      "name": "Universal Laptop Chargers Compatible with HP Dell Lenovo",
+      "name": "Universal Laptop Chargers Compatible with HP Dell Lenovo Acer 65W 90W",
       "category": "accessories",
       "price": 2500,
-      "image": "/api/placeholder/300/300",
+      "image": "https://images.unsplash.com/photo-1609592591345-b0abcf3f5ca5?w=400&h=300&fit=crop&crop=center",
       "specs": {
         "processor": "N/A",
         "ram": "N/A",
         "storage": "N/A",
-        "display": "Universal Compatibility"
+        "display": "65W/90W Power Output"
       },
       "condition": "New",
       "inStock": true,
@@ -163,35 +179,35 @@
     },
     {
       "id": "laptop-bags",
-      "name": "Professional Laptop Bags 15.6 Inch Water Resistant",
+      "name": "Professional Laptop Bag 15.6 inch Water Resistant Business Carry Case",
       "category": "accessories",
       "price": 1800,
-      "image": "/api/placeholder/300/300",
+      "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop&crop=center",
       "specs": {
         "processor": "N/A",
         "ram": "N/A",
         "storage": "N/A",
-        "display": "15.6 Inch Compatible"
+        "display": "15.6 inch Laptop Compatible"
       },
       "condition": "New",
       "inStock": true,
-      "dateAdded": "2025-08-31"
+      "dateAdded": "2025-08-30"
     },
     {
       "id": "wireless-mouse",
-      "name": "Wireless Optical Mouse 2.4GHz USB Receiver",
+      "name": "Logitech Wireless Mouse 2.4GHz USB Receiver Ergonomic Design",
       "category": "accessories",
       "price": 1200,
-      "image": "/api/placeholder/300/300",
+      "image": "https://images.unsplash.com/photo-1527814050087-3793815479db?w=400&h=300&fit=crop&crop=center",
       "specs": {
         "processor": "N/A",
         "ram": "N/A",
         "storage": "N/A",
-        "display": "2.4GHz Wireless"
+        "display": "2.4GHz Wireless Connection"
       },
       "condition": "New",
       "inStock": true,
-      "dateAdded": "2025-08-31"
+      "dateAdded": "2025-08-29"
     }
   ]
 }

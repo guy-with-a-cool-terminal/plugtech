@@ -1,5 +1,5 @@
 
-import { Phone, Instagram, Mail, MapPin } from 'lucide-react';
+import { Phone, Instagram, Mail, MapPin, Clock } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -73,8 +73,8 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-sm">
                 <Phone className="w-4 h-4 text-primary" />
-                <a href="tel:+2547114483989" className="text-muted-foreground hover:text-primary transition-colors duration-200">
-                  +254 711 448 3989
+                <a href="tel:+254711448398" className="text-muted-foreground hover:text-primary transition-colors duration-200">
+                  +254 711 448 398
                 </a>
               </li>
               <li className="flex items-center gap-2 text-sm">
@@ -83,7 +83,10 @@ const Footer = () => {
               </li>
               <li className="flex items-start gap-2 text-sm">
                 <MapPin className="w-4 h-4 text-primary mt-0.5" />
-                <span className="text-muted-foreground">Nairobi, Kenya</span>
+                <div className="text-muted-foreground">
+                  <div>Rasumal House, Shop No. 5, 1st Floor</div>
+                  <div>Tom Mboya Street, Nairobi</div>
+                </div>
               </li>
             </ul>
           </div>
@@ -92,17 +95,18 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Business Hours</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="flex justify-between">
-                <span>Mon - Fri:</span>
-                <span>8:00 AM - 6:00 PM</span>
-              </li>
-              <li className="flex justify-between">
-                <span>Saturday:</span>
-                <span>9:00 AM - 5:00 PM</span>
-              </li>
-              <li className="flex justify-between">
-                <span>Sunday:</span>
-                <span>10:00 AM - 4:00 PM</span>
+              <li className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-primary" />
+                <div>
+                  <div className="flex justify-between">
+                    <span>Mon - Sat:</span>
+                    <span>8AM - 7PM</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Sunday:</span>
+                    <span>10AM - 5PM</span>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>

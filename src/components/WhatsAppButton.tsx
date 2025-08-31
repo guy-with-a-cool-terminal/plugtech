@@ -20,7 +20,7 @@ const WhatsAppButton = ({
   cartItems, 
   className = "" 
 }: WhatsAppButtonProps) => {
-  const phoneNumber = "2547114483989";
+  const phoneNumber = "254711448398"; // Fixed format without the extra 9
 
   const generateMessage = () => {
     if (cartItems && cartItems.length > 0) {
