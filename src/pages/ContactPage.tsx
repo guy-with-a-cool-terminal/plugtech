@@ -1,9 +1,55 @@
+
+import { useState } from 'react';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
 
 const ContactPage = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Generate WhatsApp message from form data
+    const phoneNumber = "254711483989";
+    let message = "📧 *CONTACT FORM MESSAGE*\n\n";
+    message += `👤 *Name:* ${formData.name}\n`;
+    message += `📧 *Email:* ${formData.email}\n`;
+    message += `📝 *Subject:* ${formData.subject}\n\n`;
+    message += `*Message:*\n${formData.message}\n\n`;
+    message += "Please respond at your earliest convenience.\n";
+    message += "Thank you! 🙏";
+    
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    window.open(whatsappUrl, '_blank');
+    
+    // Reset form after submission
+    setFormData({
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -79,28 +125,34 @@ const ContactPage = () => {
           {/* Contact Form */}
           <div className="bg-card border border-border rounded-lg p-6">
             <h3 className="text-lg font-semibold text-foreground mb-4">Send us a Message</h3>
-            <form className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-foreground mb-1">
                     Name
                   </label>
-                  <input
+                  <Input
                     type="text"
                     id="name"
-                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
                     placeholder="Your name"
+                    required
                   />
                 </div>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1">
                     Email
                   </label>
-                  <input
+                  <Input
                     type="email"
                     id="email"
-                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                     placeholder="your@email.com"
+                    required
                   />
                 </div>
               </div>
@@ -108,30 +160,37 @@ const ContactPage = () => {
                 <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-1">
                   Subject
                 </label>
-                <input
+                <Input
                   type="text"
                   id="subject"
-                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
                   placeholder="How can we help?"
+                  required
                 />
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-foreground mb-1">
                   Message
                 </label>
-                <textarea
+                <Textarea
                   id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
                   rows={4}
-                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                  className="resize-none"
                   placeholder="Tell us more about your inquiry..."
-                ></textarea>
+                  required
+                />
               </div>
-              <button
+              <Button
                 type="submit"
-                className="btn-primary w-full md:w-auto"
+                className="w-full md:w-auto"
               >
                 Send Message
-              </button>
+              </Button>
             </form>
           </div>
         </div>
