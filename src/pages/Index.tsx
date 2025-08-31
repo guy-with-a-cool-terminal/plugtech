@@ -29,7 +29,7 @@ interface CartItem extends Product {
 }
 
 const Index = () => {
-  const [products] = useState<Product[]>(productsData.products);
+  const [products, setProducts] = useState<Product[]>(productsData.products);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -39,6 +39,28 @@ const Index = () => {
     if (savedCart) {
       setCartItems(JSON.parse(savedCart));
     }
+  }, []);
+
+  // Listen for product updates from admin panel
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'plugtech-products' && e.newValue) {
+        const updatedProducts = JSON.parse(e.newValue);
+        setProducts(updatedProducts);
+      }
+    };
+
+    // Load products from localStorage if available
+    const savedProducts = localStorage.getItem('plugtech-products');
+    if (savedProducts) {
+      setProducts(JSON.parse(savedProducts));
+    }
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   // Save cart to localStorage
@@ -128,27 +150,27 @@ const Index = () => {
       <Header cartItemsCount={cartItemsCount} onCartOpen={() => setIsCartOpen(true)} />
 
       {/* Hero Section */}
-      <section className="hero-section">
-        <div className="container-custom">
+      <section className="bg-gradient-to-br from-primary/5 to-primary/10 py-12 sm:py-16 lg:py-20">
+        <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-4 sm:mb-6">
                 Quality Computer Hardware at 
                 <span className="text-primary"> Best Prices</span>
               </h1>
-              <p className="text-base lg:text-lg text-muted-foreground mb-8 leading-relaxed">
+              <p className="text-sm sm:text-base lg:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed">
                 Find the perfect laptop, desktop, or computer accessory for your needs. 
                 We offer both new and refurbished computers with guaranteed quality and competitive prices.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <WhatsAppButton className="btn-primary text-center" />
-                <a href="/category/laptops" className="btn-secondary text-center">
+              <div className="flex flex-col sm:flex-row gap-4 mb-6 sm:mb-8">
+                <WhatsAppButton className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg transition-colors duration-200 text-center font-medium" />
+                <a href="/category/laptops" className="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-6 py-3 rounded-lg transition-colors duration-200 text-center font-medium">
                   Browse Laptops
                 </a>
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 lg:gap-6 text-sm text-muted-foreground">
+              <div className="flex flex-wrap items-center gap-4 lg:gap-6 text-xs sm:text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                   <span>Quality Guaranteed</span>
@@ -159,7 +181,7 @@ const Index = () => {
             </div>
 
             {featuredProduct && (
-              <div className="bg-card border border-border rounded-2xl p-6 shadow-lg">
+              <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 shadow-lg">
                 <div className="text-center mb-4">
                   <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
                     Featured Deal
@@ -176,10 +198,10 @@ const Index = () => {
       </section>
 
       {/* Categories */}
-      <section className="py-16">
-        <div className="container-custom">
-          <h2 className="section-title">Shop by Category</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
+      <section className="py-12 sm:py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8 sm:mb-12">Shop by Category</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6">
             {categories.map((category) => {
               const Icon = category.icon;
               return (
@@ -188,19 +210,19 @@ const Index = () => {
                   href={`/category/${category.name.toLowerCase()}`}
                   className="group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                 >
-                  <div className="relative h-32 sm:h-40">
+                  <div className="relative h-24 sm:h-32 lg:h-40">
                     <img
                       src={category.image}
                       alt={category.name}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                      <Icon className="w-8 h-8 sm:w-12 sm:h-12 text-white" />
+                      <Icon className="w-6 h-6 sm:w-8 sm:h-8 lg:w-12 lg:h-12 text-white" />
                     </div>
                   </div>
-                  <div className="p-3 sm:p-4 text-center">
-                    <h3 className="font-semibold text-foreground mb-1 text-sm sm:text-base">{category.name}</h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground">{category.count} Products</p>
+                  <div className="p-2 sm:p-3 lg:p-4 text-center">
+                    <h3 className="font-semibold text-foreground mb-1 text-xs sm:text-sm lg:text-base">{category.name}</h3>
+                    <p className="text-xs text-muted-foreground">{category.count} Products</p>
                   </div>
                 </a>
               );
@@ -210,10 +232,10 @@ const Index = () => {
       </section>
 
       {/* Latest Products */}
-      <section className="py-16 bg-muted/50">
-        <div className="container-custom">
-          <h2 className="section-title">Latest Products</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+      <section className="py-12 sm:py-16 bg-muted/50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8 sm:mb-12">Latest Products</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {latestProducts.map((product) => (
               <ProductCard 
                 key={product.id} 
@@ -223,7 +245,7 @@ const Index = () => {
             ))}
           </div>
           <div className="text-center mt-8">
-            <a href="/category/laptops" className="btn-primary">
+            <a href="/category/laptops" className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg transition-colors duration-200 inline-block font-medium">
               View All Products
             </a>
           </div>
