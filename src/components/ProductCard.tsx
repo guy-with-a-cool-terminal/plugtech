@@ -1,21 +1,6 @@
 
 import WhatsAppButton from './WhatsAppButton';
-
-interface Product {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  image: string;
-  specs: {
-    processor: string;
-    ram: string;
-    storage: string;
-    display: string;
-  };
-  condition: string;
-  inStock: boolean;
-}
+import { Product } from '@/types/product';
 
 interface ProductCardProps {
   product: Product;
@@ -31,7 +16,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
           alt={product.name}
           className="product-image"
         />
-        {!product.inStock && (
+        {!product.in_stock && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <span className="text-white font-semibold bg-red-600 px-3 py-1 rounded">
               Out of Stock
@@ -55,16 +40,16 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         </h3>
         
         <div className="text-xs text-muted-foreground mb-3 space-y-1">
-          {product.specs.processor !== 'N/A' && (
-            <div>Processor: {product.specs.processor}</div>
+          {product.processor !== 'N/A' && (
+            <div>Processor: {product.processor}</div>
           )}
-          {product.specs.ram !== 'N/A' && (
-            <div>RAM: {product.specs.ram}</div>
+          {product.ram !== 'N/A' && (
+            <div>RAM: {product.ram}</div>
           )}
-          {product.specs.storage !== 'N/A' && (
-            <div>Storage: {product.specs.storage}</div>
+          {product.storage !== 'N/A' && (
+            <div>Storage: {product.storage}</div>
           )}
-          <div>Display: {product.specs.display}</div>
+          <div>Display: {product.display}</div>
         </div>
         
         <div className="product-price">
@@ -78,7 +63,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
             productUrl={`/product/${product.id}`}
             className="flex-1 justify-center text-sm"
           />
-          {onAddToCart && product.inStock && (
+          {onAddToCart && product.in_stock && (
             <button
               onClick={() => onAddToCart(product)}
               className="px-4 py-2 border border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-lg transition-colors duration-200 text-sm font-medium"

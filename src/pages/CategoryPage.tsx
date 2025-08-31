@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -6,24 +5,7 @@ import ProductCard from '../components/ProductCard';
 import ShoppingCart from '../components/ShoppingCart';
 import { useProducts } from '../hooks/useProducts';
 import { useParams } from 'react-router-dom';
-
-interface Product {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  image: string;
-  processor: string;
-  ram: string;
-  storage: string;
-  display: string;
-  condition: string;
-  in_stock: boolean;
-}
-
-interface CartItem extends Product {
-  quantity: number;
-}
+import { Product, CartItem } from '@/types/product';
 
 const CategoryPage = () => {
   const { category } = useParams<{ category: string }>();

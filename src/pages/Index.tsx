@@ -6,24 +6,7 @@ import ProductCard from '../components/ProductCard';
 import ShoppingCart from '../components/ShoppingCart';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { useProducts } from '../hooks/useProducts';
-
-interface Product {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  image: string;
-  processor: string;
-  ram: string;
-  storage: string;
-  display: string;
-  condition: string;
-  in_stock: boolean;
-}
-
-interface CartItem extends Product {
-  quantity: number;
-}
+import { Product, CartItem } from '@/types/product';
 
 const Index = () => {
   const { products, loading } = useProducts();
