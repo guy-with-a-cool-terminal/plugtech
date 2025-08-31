@@ -90,7 +90,6 @@ const Header = ({ cartItemsCount = 0, onCartOpen }: HeaderProps) => {
             <a href="/category/monitors" className="text-foreground hover:text-primary transition-colors">Monitors</a>
             <a href="/category/accessories" className="text-foreground hover:text-primary transition-colors">Accessories</a>
             <a href="/contact" className="text-foreground hover:text-primary transition-colors">Contact</a>
-            <a href="/admin" className="text-foreground hover:text-primary transition-colors">Admin</a>
           </nav>
 
           {/* Search Bar - Desktop */}
@@ -159,7 +158,6 @@ const Header = ({ cartItemsCount = 0, onCartOpen }: HeaderProps) => {
               <a href="/category/monitors" className="text-foreground hover:text-primary transition-colors py-2">Monitors</a>
               <a href="/category/accessories" className="text-foreground hover:text-primary transition-colors py-2">Accessories</a>
               <a href="/contact" className="text-foreground hover:text-primary transition-colors py-2">Contact</a>
-              <a href="/admin" className="text-foreground hover:text-primary transition-colors py-2">Admin</a>
             </div>
           </nav>
         )}

@@ -14,12 +14,12 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   const offerEndDate = hasOffer ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null; // 24 hours from now
 
   return (
-    <div className="bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 group w-full flex flex-col">
-      <div className="relative overflow-hidden">
+    <div className="bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 group w-full h-full flex flex-col">
+      <div className="relative overflow-hidden aspect-[4/3]">
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-48 sm:h-56 md:h-64 lg:h-56 xl:h-64 object-cover group-hover:scale-105 transition-transform duration-200"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
         />
         {product.in_stock ? (
           <span className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
@@ -37,12 +37,12 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         )}
       </div>
 
-      <div className="p-3 sm:p-4 flex-1 flex flex-col">
-        <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base leading-tight min-h-[3rem] sm:min-h-[3.5rem] line-clamp-3">
+      <div className="p-4 flex-1 flex flex-col">
+        <h3 className="font-semibold text-foreground mb-3 text-base leading-tight min-h-[3rem] line-clamp-3">
           {product.name}
         </h3>
         
-        <div className="space-y-1 text-xs sm:text-sm text-muted-foreground mb-3 flex-1">
+        <div className="space-y-2 text-sm text-muted-foreground mb-4 flex-1">
           <p><span className="font-medium">Processor:</span> <span className="break-words">{product.processor}</span></p>
           <p><span className="font-medium">RAM:</span> {product.ram}</p>
           <p><span className="font-medium">Storage:</span> {product.storage}</p>
@@ -50,14 +50,14 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         </div>
 
         {hasOffer && offerEndDate && (
-          <div className="mb-3">
+          <div className="mb-4">
             <CountdownTimer endDate={offerEndDate} />
           </div>
         )}
 
         <div className="mt-auto">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-lg sm:text-xl font-bold text-primary">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-2xl font-bold text-primary">
               KSh {product.price.toLocaleString()}
             </span>
           </div>
@@ -67,16 +67,15 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
               className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors flex-shrink-0"
               title="Quick view"
             >
-              <Eye className="w-4 h-4" />
+              <Eye className="w-5 h-5" />
             </button>
             <button
               onClick={() => onAddToCart(product)}
               disabled={!product.in_stock}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-3 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm flex-1 justify-center"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm flex-1 justify-center font-medium"
             >
               <ShoppingCart className="w-4 h-4" />
-              <span className="hidden sm:inline">Add to Cart</span>
-              <span className="sm:hidden">Add</span>
+              <span>Add to Cart</span>
             </button>
           </div>
         </div>

@@ -21,16 +21,18 @@ const ProductCarousel = ({
   const [itemsPerView, setItemsPerView] = useState(4);
   const carouselRef = useRef<HTMLDivElement>(null);
   
-  // Responsive items per view with better breakpoints
+  // Responsive items per view
   useEffect(() => {
     const updateItemsPerView = () => {
       const width = window.innerWidth;
       if (width < 640) {
-        setItemsPerView(1); // Mobile: 1 item (full width)
+        setItemsPerView(1); // Mobile: 1 item
       } else if (width < 768) {
         setItemsPerView(2); // Small tablet: 2 items
-      } else if (width < 1200) {
-        setItemsPerView(3); // Tablet/Small desktop: 3 items
+      } else if (width < 1024) {
+        setItemsPerView(2); // Tablet: 2 items
+      } else if (width < 1280) {
+        setItemsPerView(3); // Small desktop: 3 items
       } else {
         setItemsPerView(4); // Large desktop: 4 items
       }
@@ -78,7 +80,7 @@ const ProductCarousel = ({
       <div className="carousel-container">
         <div 
           ref={carouselRef}
-          className="flex transition-transform duration-500 ease-in-out gap-3 sm:gap-4 md:gap-5 lg:gap-6"
+          className="flex transition-transform duration-500 ease-in-out gap-4 md:gap-6"
           style={{
             transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`
           }}
@@ -86,10 +88,10 @@ const ProductCarousel = ({
           {products.map((product) => (
             <div 
               key={product.id} 
-              className="flex-shrink-0 min-h-[400px] sm:min-h-[450px] md:min-h-[500px]"
+              className="flex-shrink-0"
               style={{ width: `calc(${100 / itemsPerView}% - ${(itemsPerView - 1) * 1.5}rem / ${itemsPerView})` }}
             >
-              <div className="h-full">
+              <div className="h-full min-h-[500px] md:min-h-[550px]">
                 <ProductCard 
                   product={product} 
                   onAddToCart={onAddToCart}
@@ -105,17 +107,17 @@ const ProductCarousel = ({
             <button
               onClick={prevSlide}
               disabled={currentIndex === 0}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-secondary/90 text-secondary-foreground p-2 rounded-full shadow-lg hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed z-10"
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-secondary/90 text-secondary-foreground p-3 rounded-full shadow-lg hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed z-10"
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft size={24} />
             </button>
             
             <button
               onClick={nextSlide}
               disabled={currentIndex >= maxIndex}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-secondary/90 text-secondary-foreground p-2 rounded-full shadow-lg hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed z-10"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-secondary/90 text-secondary-foreground p-3 rounded-full shadow-lg hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed z-10"
             >
-              <ChevronRight size={20} />
+              <ChevronRight size={24} />
             </button>
           </>
         )}
@@ -127,7 +129,7 @@ const ProductCarousel = ({
               <button
                 key={index}
                 onClick={() => scrollTo(index)}
-                className={`w-2 h-2 rounded-full transition-colors ${
+                className={`w-3 h-3 rounded-full transition-colors ${
                   currentIndex === index ? 'bg-primary' : 'bg-muted-foreground/30'
                 }`}
               />

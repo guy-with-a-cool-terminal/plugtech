@@ -1,137 +1,144 @@
 
-import { Phone, Mail, MapPin, Clock, Instagram } from 'lucide-react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import WhatsAppButton from '../components/WhatsAppButton';
+import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import WhatsAppButton from '@/components/WhatsAppButton';
 
 const ContactPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       
-      <div className="container-custom py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-4">Contact Us</h1>
-          <p className="text-muted-foreground">
-            Get in touch with Plug Tech Business for all your computer hardware needs
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div>
-            <h2 className="text-2xl font-semibold text-foreground mb-6">Get In Touch</h2>
-            
+      <main className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-3xl font-bold text-foreground mb-8 text-center">Contact Us</h1>
+          
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            {/* Contact Information */}
             <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <Phone className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-medium text-foreground mb-1">Phone</h3>
-                  <a href="tel:+254711448398" className="text-primary hover:text-primary-hover transition-colors break-words">
-                    +254 711 448 398
+              <h2 className="text-xl font-semibold text-foreground mb-4">Get in Touch</h2>
+              
+              <div className="contact-link">
+                <Phone className="w-5 h-5" />
+                <div>
+                  <p className="font-medium">Phone</p>
+                  <a href="tel:0711483989" className="text-primary hover:underline">
+                    0711 483 989
                   </a>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4">
-                <Mail className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-medium text-foreground mb-1">WhatsApp</h3>
-                  <p className="text-muted-foreground mb-2">For quick orders and inquiries</p>
-                  <WhatsAppButton className="w-full sm:w-auto" />
+              <div className="contact-link">
+                <Mail className="w-5 h-5" />
+                <div>
+                  <p className="font-medium">Email</p>
+                  <a href="mailto:info@plugtechbusiness.com" className="text-primary hover:underline">
+                    info@plugtechbusiness.com
+                  </a>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4">
-                <MapPin className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-medium text-foreground mb-1">Location</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Rasumal House, Shop Number 5, 1st Floor<br />
-                    Tom Mboya Street, Nairobi<br />
-                    Kenya
-                  </p>
+              <div className="contact-link">
+                <MapPin className="w-5 h-5" />
+                <div>
+                  <p className="font-medium">Address</p>
+                  <p>Rasumal House, Shop 5, 1st Floor</p>
+                  <p>Tom Mboya Street, Nairobi</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4">
-                <Clock className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-medium text-foreground mb-1">Working Hours</h3>
-                  <div className="text-muted-foreground space-y-1">
-                    <p>Monday - Saturday: 9:00 AM - 7:00 PM</p>
-                    <p>Sunday: Closed</p>
-                  </div>
+              <div className="contact-link">
+                <Clock className="w-5 h-5" />
+                <div>
+                  <p className="font-medium">Working Hours</p>
+                  <p>Monday - Saturday: 9:00 AM - 7:00 PM</p>
+                  <p>Sunday: Closed</p>
                 </div>
               </div>
+            </div>
 
-              <div className="flex items-start gap-4">
-                <Instagram className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-medium text-foreground mb-1">Social Media</h3>
-                  <div className="flex flex-wrap gap-4">
-                    <a 
-                      href="https://instagram.com/collo_thee_plug" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-primary hover:text-primary-hover transition-colors"
-                    >
-                      Instagram
-                    </a>
-                    <a 
-                      href="https://tiktok.com/@collo_thee_plug" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-primary hover:text-primary-hover transition-colors"
-                    >
-                      TikTok
-                    </a>
-                  </div>
-                  <p className="text-sm text-muted-foreground mt-1">@collo_thee_plug</p>
-                </div>
+            {/* Map or Additional Info */}
+            <div className="bg-card border border-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-foreground mb-4">Visit Our Store</h3>
+              <p className="text-muted-foreground mb-4">
+                We're located in the heart of Nairobi's business district. Come visit us to see our latest products and get expert advice on your tech needs.
+              </p>
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  <strong>Landmark:</strong> Near Kencom House
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  <strong>Parking:</strong> Available nearby
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  <strong>Public Transport:</strong> Accessible via matatu and bus routes
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-card border border-border rounded-lg p-6 h-fit">
-            <h2 className="text-2xl font-semibold text-foreground mb-6">Why Choose Plug Tech Business?</h2>
-            
-            <div className="space-y-6">
-              <div className="p-4 bg-muted/30 rounded-lg">
-                <h3 className="font-medium text-foreground mb-2 text-lg">Quality Guaranteed</h3>
-                <p className="text-muted-foreground">
-                  All our computers and laptops are thoroughly tested and come with warranty coverage.
-                </p>
+          {/* Contact Form */}
+          <div className="bg-card border border-border rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-4">Send us a Message</h3>
+            <form className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-foreground mb-1">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    placeholder="Your name"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    placeholder="your@email.com"
+                  />
+                </div>
               </div>
-              
-              <div className="p-4 bg-muted/30 rounded-lg">
-                <h3 className="font-medium text-foreground mb-2 text-lg">Competitive Prices</h3>
-                <p className="text-muted-foreground">
-                  We offer the best prices in Nairobi for both new and refurbished computers.
-                </p>
+              <div>
+                <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-1">
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  id="subject"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="How can we help?"
+                />
               </div>
-              
-              <div className="p-4 bg-muted/30 rounded-lg">
-                <h3 className="font-medium text-foreground mb-2 text-lg">Expert Support</h3>
-                <p className="text-muted-foreground">
-                  Our team provides professional advice and after-sale support for all purchases.
-                </p>
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-foreground mb-1">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  rows={4}
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                  placeholder="Tell us more about your inquiry..."
+                ></textarea>
               </div>
-              
-              <div className="p-4 bg-muted/30 rounded-lg">
-                <h3 className="font-medium text-foreground mb-2 text-lg">Wide Selection</h3>
-                <p className="text-muted-foreground">
-                  From budget laptops to high-end gaming computers, we have something for everyone.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-8">
-              <WhatsAppButton className="w-full justify-center py-3" />
-            </div>
+              <button
+                type="submit"
+                className="btn-primary w-full md:w-auto"
+              >
+                Send Message
+              </button>
+            </form>
           </div>
         </div>
-      </div>
+      </main>
 
+      <WhatsAppButton />
       <Footer />
     </div>
   );
