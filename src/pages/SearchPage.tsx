@@ -105,14 +105,41 @@ const SearchPage = () => {
 
   const cartItemsCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-  // Filter products based on search query
-  const searchResults = products.filter(product =>
-    product.name.toLowerCase().includes(query.toLowerCase()) ||
-    product.category.toLowerCase().includes(query.toLowerCase()) ||
-    product.specs.processor.toLowerCase().includes(query.toLowerCase()) ||
-    product.specs.ram.toLowerCase().includes(query.toLowerCase()) ||
-    product.specs.storage.toLowerCase().includes(query.toLowerCase())
-  );
+  // Improved search filter - more flexible matching
+  const searchResults = products.filter(product => {
+    if (!query.trim()) return false;
+    
+    const searchTerm = query.toLowerCase().trim();
+    const productName = product.name.toLowerCase();
+    const productCategory = product.category.toLowerCase();
+    const productCondition = product.condition.toLowerCase();
+    
+    // Check if search term matches any part of the product
+    return (
+      productName.includes(searchTerm) ||
+      productCategory.includes(searchTerm) ||
+      productCondition.includes(searchTerm) ||
+      product.specs.processor.toLowerCase().includes(searchTerm) ||
+      product.specs.ram.toLowerCase().includes(searchTerm) ||
+      product.specs.storage.toLowerCase().includes(searchTerm) ||
+      product.specs.display.toLowerCase().includes(searchTerm) ||
+      // Split search term by spaces and check if any word matches
+      searchTerm.split(' ').some(word => 
+        word.length > 0 && (
+          productName.includes(word) ||
+          productCategory.includes(word) ||
+          product.specs.processor.toLowerCase().includes(word) ||
+          product.specs.ram.toLowerCase().includes(word) ||
+          product.specs.storage.toLowerCase().includes(word) ||
+          product.specs.display.toLowerCase().includes(word)
+        )
+      )
+    );
+  });
+
+  console.log('Search query:', query);
+  console.log('Products found:', searchResults.length);
+  console.log('Search results:', searchResults.map(p => p.name));
 
   return (
     <div className="min-h-screen bg-background">
