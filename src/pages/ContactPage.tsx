@@ -124,7 +124,10 @@ const ContactPage = () => {
 
           {/* Contact Form */}
           <div className="bg-card border border-border rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Send us a Message</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-4">Send us a Message to WhatsApp</h3>
+            <p className="text-muted-foreground mb-4 text-sm">
+              Fill out the form below and we'll send your message directly to our WhatsApp for a quick response.
+            </p>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
@@ -189,7 +192,7 @@ const ContactPage = () => {
                 type="submit"
                 className="w-full md:w-auto"
               >
-                Send Message
+                Send Message to WhatsApp
               </Button>
             </form>
           </div>
