@@ -252,7 +252,7 @@ const AdminPage = () => {
     );
   }
 
-  // Show login form if not authenticated or not admin
+  // Show ONLY login form if not authenticated or not admin - no products visible
   if (!user || !isAdmin) {
     return (
       <div className="min-h-screen bg-background">

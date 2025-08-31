@@ -21,18 +21,18 @@ const ProductCarousel = ({
   const [itemsPerView, setItemsPerView] = useState(4);
   const carouselRef = useRef<HTMLDivElement>(null);
   
-  // Responsive items per view
+  // Responsive items per view with better breakpoints
   useEffect(() => {
     const updateItemsPerView = () => {
       const width = window.innerWidth;
       if (width < 640) {
-        setItemsPerView(1); // Mobile: 1 item
+        setItemsPerView(1); // Mobile: 1 item (full width)
       } else if (width < 768) {
         setItemsPerView(2); // Small tablet: 2 items
-      } else if (width < 1024) {
-        setItemsPerView(3); // Tablet: 3 items
+      } else if (width < 1200) {
+        setItemsPerView(3); // Tablet/Small desktop: 3 items
       } else {
-        setItemsPerView(4); // Desktop: 4 items
+        setItemsPerView(4); // Large desktop: 4 items
       }
     };
 
@@ -78,7 +78,7 @@ const ProductCarousel = ({
       <div className="carousel-container">
         <div 
           ref={carouselRef}
-          className="flex transition-transform duration-500 ease-in-out gap-2 sm:gap-4"
+          className="flex transition-transform duration-500 ease-in-out gap-3 sm:gap-4 md:gap-5 lg:gap-6"
           style={{
             transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`
           }}
@@ -86,10 +86,10 @@ const ProductCarousel = ({
           {products.map((product) => (
             <div 
               key={product.id} 
-              className="flex-shrink-0"
-              style={{ width: `${100 / itemsPerView}%` }}
+              className="flex-shrink-0 min-h-[400px] sm:min-h-[450px] md:min-h-[500px]"
+              style={{ width: `calc(${100 / itemsPerView}% - ${(itemsPerView - 1) * 1.5}rem / ${itemsPerView})` }}
             >
-              <div className="px-1 sm:px-2 h-full">
+              <div className="h-full">
                 <ProductCard 
                   product={product} 
                   onAddToCart={onAddToCart}
@@ -105,29 +105,29 @@ const ProductCarousel = ({
             <button
               onClick={prevSlide}
               disabled={currentIndex === 0}
-              className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 bg-secondary/80 text-secondary-foreground p-1.5 sm:p-2 rounded-full shadow-lg hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed z-10"
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-secondary/90 text-secondary-foreground p-2 rounded-full shadow-lg hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed z-10"
             >
-              <ChevronLeft size={16} className="sm:w-5 sm:h-5" />
+              <ChevronLeft size={20} />
             </button>
             
             <button
               onClick={nextSlide}
               disabled={currentIndex >= maxIndex}
-              className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 bg-secondary/80 text-secondary-foreground p-1.5 sm:p-2 rounded-full shadow-lg hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed z-10"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-secondary/90 text-secondary-foreground p-2 rounded-full shadow-lg hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed z-10"
             >
-              <ChevronRight size={16} className="sm:w-5 sm:h-5" />
+              <ChevronRight size={20} />
             </button>
           </>
         )}
 
         {/* Dots Indicator */}
         {products.length > itemsPerView && (
-          <div className="flex justify-center space-x-1 sm:space-x-2 mt-4">
+          <div className="flex justify-center space-x-2 mt-6">
             {Array.from({ length: maxIndex + 1 }).map((_, index) => (
               <button
                 key={index}
                 onClick={() => scrollTo(index)}
-                className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-colors ${
+                className={`w-2 h-2 rounded-full transition-colors ${
                   currentIndex === index ? 'bg-primary' : 'bg-muted-foreground/30'
                 }`}
               />

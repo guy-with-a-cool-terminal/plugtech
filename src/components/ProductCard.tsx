@@ -14,12 +14,12 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   const offerEndDate = hasOffer ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null; // 24 hours from now
 
   return (
-    <div className="bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 group w-full h-full flex flex-col">
+    <div className="bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 group w-full flex flex-col">
       <div className="relative overflow-hidden">
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-40 sm:h-48 md:h-56 lg:h-48 object-cover group-hover:scale-105 transition-transform duration-200"
+          className="w-full h-48 sm:h-56 md:h-64 lg:h-56 xl:h-64 object-cover group-hover:scale-105 transition-transform duration-200"
         />
         {product.in_stock ? (
           <span className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
@@ -38,7 +38,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
       </div>
 
       <div className="p-3 sm:p-4 flex-1 flex flex-col">
-        <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base leading-tight min-h-[2.5rem] sm:min-h-[3rem] line-clamp-3">
+        <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base leading-tight min-h-[3rem] sm:min-h-[3.5rem] line-clamp-3">
           {product.name}
         </h3>
         
