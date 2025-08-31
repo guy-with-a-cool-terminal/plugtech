@@ -38,9 +38,9 @@ const Header = ({ cartItemsCount = 0, onCartOpen }: HeaderProps) => {
         <div className="container-custom">
           <div className="flex justify-between items-center text-sm">
             <div className="flex items-center gap-6">
-              <a href="tel:+254711448398" className="contact-link text-primary-foreground hover:text-primary-foreground/80">
+              <a href="tel:0711483989" className="contact-link text-primary-foreground hover:text-primary-foreground/80">
                 <Phone className="w-4 h-4" />
-                <span className="hidden sm:inline">+254 711 448 398</span>
+                <span className="hidden sm:inline">0711 483 989</span>
               </a>
               <div className="hidden md:flex items-center gap-4">
                 <a 
@@ -49,19 +49,19 @@ const Header = ({ cartItemsCount = 0, onCartOpen }: HeaderProps) => {
                   rel="noopener noreferrer"
                   className="contact-link text-primary-foreground hover:text-primary-foreground/80"
                 >
-                  <Instagram className="w-4 h-4" />
+                  <Instagram className="w-4 h-4" style={{ color: '#E4405F' }} />
                   <span>@collo_thee_plug</span>
                 </a>
                 <a 
-                  href="https://tiktok.com/@collo_thee_plug" 
+                  href="https://tiktok.com/@plugtechbusiness" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="contact-link text-primary-foreground hover:text-primary-foreground/80"
                 >
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="#ff0050">
                     <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-.88-.05A6.33 6.33 0 0 0 5.76 20.5a6.34 6.34 0 0 0 10.86-4.43V7.83a8.2 8.2 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.8-.26z"/>
                   </svg>
-                  <span>@collo_thee_plug</span>
+                  <span>@plugtechbusiness</span>
                 </a>
               </div>
             </div>
