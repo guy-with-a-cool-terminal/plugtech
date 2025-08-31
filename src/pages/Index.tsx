@@ -250,43 +250,40 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Desktops & Monitors */}
+      {/* Desktops Carousel */}
       <section className="py-16">
         <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-            {/* Desktops */}
-            <div>
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
-                <h2 className="text-xl font-bold text-foreground">Desktop Computers</h2>
-                <a href="/category/desktops" className="text-primary hover:text-primary-hover font-medium text-sm">
-                  View All →
-                </a>
-              </div>
-              <ProductCarousel 
-                products={desktops.slice(0, 3)}
-                onAddToCart={addToCart}
-              />
-            </div>
-
-            {/* Monitors */}
-            <div>
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
-                <h2 className="text-xl font-bold text-foreground">Monitors</h2>
-                <a href="/category/monitors" className="text-primary hover:text-primary-hover font-medium text-sm">
-                  View All →
-                </a>
-              </div>
-              <ProductCarousel 
-                products={monitors.slice(0, 3)}
-                onAddToCart={addToCart}
-              />
-            </div>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+            <h2 className="text-2xl font-bold text-foreground">Desktop Computers</h2>
+            <a href="/category/desktops" className="text-primary hover:text-primary-hover font-medium">
+              View All Desktops →
+            </a>
           </div>
+          <ProductCarousel 
+            products={desktops}
+            onAddToCart={addToCart}
+          />
+        </div>
+      </section>
+
+      {/* Monitors Carousel */}
+      <section className="py-16 bg-muted/50">
+        <div className="container-custom">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+            <h2 className="text-2xl font-bold text-foreground">Monitors</h2>
+            <a href="/category/monitors" className="text-primary hover:text-primary-hover font-medium">
+              View All Monitors →
+            </a>
+          </div>
+          <ProductCarousel 
+            products={monitors}
+            onAddToCart={addToCart}
+          />
         </div>
       </section>
 
       {/* Accessories Carousel */}
-      <section className="py-16 bg-muted/50">
+      <section className="py-16">
         <div className="container-custom">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <h2 className="text-2xl font-bold text-foreground">Computer Accessories</h2>
