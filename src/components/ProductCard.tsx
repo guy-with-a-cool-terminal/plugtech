@@ -2,6 +2,7 @@
 import { ShoppingCart, Eye } from 'lucide-react';
 import { Product } from '@/types/product';
 import CountdownTimer from './CountdownTimer';
+import WhatsAppButton from './WhatsAppButton';
 
 interface ProductCardProps {
   product: Product;
@@ -15,11 +16,12 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
 
   return (
     <div className="bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 group w-full h-full flex flex-col">
-      <div className="relative overflow-hidden aspect-[4/3]">
+      <div className="relative overflow-hidden aspect-[3/2]">
         <img
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+          loading="lazy"
         />
         {product.in_stock ? (
           <span className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
@@ -37,12 +39,12 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         )}
       </div>
 
-      <div className="p-4 flex-1 flex flex-col">
-        <h3 className="font-semibold text-foreground mb-3 text-base leading-tight min-h-[3rem] line-clamp-3">
+      <div className="p-3 sm:p-4 flex-1 flex flex-col">
+        <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base leading-tight line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem]">
           {product.name}
         </h3>
         
-        <div className="space-y-2 text-sm text-muted-foreground mb-4 flex-1">
+        <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 flex-1">
           <p><span className="font-medium">Processor:</span> <span className="break-words">{product.processor}</span></p>
           <p><span className="font-medium">RAM:</span> {product.ram}</p>
           <p><span className="font-medium">Storage:</span> {product.storage}</p>
@@ -50,33 +52,42 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         </div>
 
         {hasOffer && offerEndDate && (
-          <div className="mb-4">
+          <div className="mb-3 sm:mb-4">
             <CountdownTimer endDate={offerEndDate} />
           </div>
         )}
 
         <div className="mt-auto">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-2xl font-bold text-primary">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <span className="text-lg sm:text-xl font-bold text-primary">
               KSh {product.price.toLocaleString()}
             </span>
           </div>
           
-          <div className="flex gap-2">
-            <button
-              className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors flex-shrink-0"
-              title="Quick view"
-            >
-              <Eye className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => onAddToCart(product)}
-              disabled={!product.in_stock}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm flex-1 justify-center font-medium"
-            >
-              <ShoppingCart className="w-4 h-4" />
-              <span>Add to Cart</span>
-            </button>
+          <div className="space-y-2">
+            <div className="flex gap-2">
+              <button
+                className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors flex-shrink-0"
+                title="Quick view"
+              >
+                <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+              <button
+                onClick={() => onAddToCart(product)}
+                disabled={!product.in_stock}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs sm:text-sm flex-1 justify-center font-medium"
+              >
+                <ShoppingCart className="w-4 h-4" />
+                <span>Add to Cart</span>
+              </button>
+            </div>
+            
+            <WhatsAppButton
+              productName={product.name}
+              productPrice={product.price}
+              productUrl={`/product/${product.id}`}
+              className="w-full bg-green-600 hover:bg-green-700 text-white px-3 sm:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors text-xs sm:text-sm font-medium"
+            />
           </div>
         </div>
       </div>
