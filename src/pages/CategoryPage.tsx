@@ -1,7 +1,9 @@
+
 import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
+import ProductCardSkeleton from '../components/ProductCardSkeleton';
 import ShoppingCart from '../components/ShoppingCart';
 import { useProducts } from '../hooks/useProducts';
 import { useParams } from 'react-router-dom';
@@ -62,7 +64,7 @@ const CategoryPage = () => {
 
   const cartItemsCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   
-  const filteredProducts = products.filter(product => product.category === category);
+  const filteredProducts = loading ? [] : products.filter(product => product.category === category);
   
   const categoryTitles: Record<string, string> = {
     laptops: 'Laptops',
@@ -73,17 +75,6 @@ const CategoryPage = () => {
   };
 
   const categoryTitle = categoryTitles[category || ''] || 'Products';
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading products...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -97,7 +88,13 @@ const CategoryPage = () => {
           </p>
         </div>
 
-        {filteredProducts.length > 0 ? (
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <ProductCardSkeleton key={index} />
+            ))}
+          </div>
+        ) : filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {filteredProducts.map((product) => (
               <ProductCard 

@@ -1,8 +1,10 @@
+
 import { useState, useEffect } from 'react';
 import { Laptop, Monitor, Gamepad2, HardDrive, Headphones, Star } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
+import ProductCardSkeleton from '../components/ProductCardSkeleton';
 import ShoppingCart from '../components/ShoppingCart';
 import WhatsAppButton from '../components/WhatsAppButton';
 import TrustBadges from '../components/TrustBadges';
@@ -72,60 +74,49 @@ const Index = () => {
     { 
       name: 'Laptops', 
       icon: Laptop, 
-      count: products.filter(p => p.category === 'laptops').length,
+      count: loading ? 0 : products.filter(p => p.category === 'laptops').length,
       image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&h=150&fit=crop&crop=center'
     },
     { 
       name: 'Desktops', 
       icon: HardDrive, 
-      count: products.filter(p => p.category === 'desktops').length,
+      count: loading ? 0 : products.filter(p => p.category === 'desktops').length,
       image: 'https://images.unsplash.com/photo-1547082299-de196ea013d6?w=200&h=150&fit=crop&crop=center'
     },
     { 
       name: 'Gaming', 
       icon: Gamepad2, 
-      count: products.filter(p => p.category === 'gaming').length,
+      count: loading ? 0 : products.filter(p => p.category === 'gaming').length,
       image: 'https://images.unsplash.com/photo-1593640393637-2ed698cb2682?w=200&h=150&fit=crop&crop=center'
     },
     { 
       name: 'Monitors', 
       icon: Monitor, 
-      count: products.filter(p => p.category === 'monitors').length,
+      count: loading ? 0 : products.filter(p => p.category === 'monitors').length,
       image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=200&h=150&fit=crop&crop=center'
     },
     { 
       name: 'Accessories', 
       icon: Headphones, 
-      count: products.filter(p => p.category === 'accessories').length,
+      count: loading ? 0 : products.filter(p => p.category === 'accessories').length,
       image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=200&h=150&fit=crop&crop=center'
     },
   ];
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading products...</p>
-        </div>
-      </div>
-    );
-  }
-
-  const featuredProduct = products.find(p => p.name.includes('HP ProBook'));
-  const latestProducts = products.slice(0, 8);
-  const laptops = products.filter(p => p.category === 'laptops');
-  const gaming = products.filter(p => p.category === 'gaming');
-  const desktops = products.filter(p => p.category === 'desktops');
-  const monitors = products.filter(p => p.category === 'monitors');
-  const accessories = products.filter(p => p.category === 'accessories');
+  const featuredProduct = loading ? null : products.find(p => p.name.includes('HP ProBook'));
+  const latestProducts = loading ? [] : products.slice(0, 8);
+  const laptops = loading ? [] : products.filter(p => p.category === 'laptops');
+  const gaming = loading ? [] : products.filter(p => p.category === 'gaming');
+  const desktops = loading ? [] : products.filter(p => p.category === 'desktops');
+  const monitors = loading ? [] : products.filter(p => p.category === 'monitors');
+  const accessories = loading ? [] : products.filter(p => p.category === 'accessories');
 
   return (
     <div className="min-h-screen bg-background">
       <SEO />
       <Header cartItemsCount={cartItemsCount} onCartOpen={() => setIsCartOpen(true)} />
 
-      {/* Hero Section */}
+      {/* Hero Section - Always visible */}
       <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -158,27 +149,30 @@ const Index = () => {
               </div>
             </div>
 
-            {featuredProduct && (
-              <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div className="text-center mb-4">
-                  <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium animate-pulse">
-                    ⚡ Featured Deal - Limited Time!
-                  </span>
-                </div>
+            {/* Featured Product with loading state */}
+            <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="text-center mb-4">
+                <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium animate-pulse">
+                  ⚡ Featured Deal - Limited Time!
+                </span>
+              </div>
+              {loading || !featuredProduct ? (
+                <ProductCardSkeleton />
+              ) : (
                 <ProductCard 
                   product={featuredProduct} 
                   onAddToCart={addToCart}
                 />
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Trust Badges */}
+      {/* Trust Badges - Always visible */}
       <TrustBadges />
 
-      {/* Categories */}
+      {/* Categories - Always visible */}
       <section className="py-12 sm:py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8 sm:mb-12">Shop by Category</h2>
@@ -203,7 +197,9 @@ const Index = () => {
                   </div>
                   <div className="p-2 sm:p-3 lg:p-4 text-center">
                     <h3 className="font-semibold text-foreground mb-1 text-xs sm:text-sm lg:text-base group-hover:text-primary transition-colors duration-200">{category.name}</h3>
-                    <p className="text-xs text-muted-foreground">{category.count} Products Available</p>
+                    <p className="text-xs text-muted-foreground">
+                      {loading ? "Loading..." : `${category.count} Products Available`}
+                    </p>
                   </div>
                 </a>
               );
@@ -212,7 +208,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Latest Products Carousel */}
+      {/* Latest Products Carousel with loading state */}
       <section className="py-12 sm:py-16 bg-muted/50">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8 sm:mb-12">Latest Products</h2>
@@ -220,6 +216,7 @@ const Index = () => {
             products={latestProducts}
             onAddToCart={addToCart}
             autoScroll={true}
+            loading={loading}
           />
           <div className="text-center mt-8">
             <a href="/category/laptops" className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg transition-all duration-200 transform hover:scale-105 inline-block font-medium">
@@ -229,10 +226,10 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Why Choose Us */}
+      {/* Why Choose Us - Always visible */}
       <WhyChooseUs />
 
-      {/* Product Category Carousels */}
+      {/* Product Category Carousels with loading states */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
@@ -244,6 +241,7 @@ const Index = () => {
           <ProductCarousel 
             products={laptops}
             onAddToCart={addToCart}
+            loading={loading}
           />
         </div>
       </section>
@@ -260,6 +258,7 @@ const Index = () => {
           <ProductCarousel 
             products={gaming}
             onAddToCart={addToCart}
+            loading={loading}
           />
         </div>
       </section>
@@ -276,6 +275,7 @@ const Index = () => {
           <ProductCarousel 
             products={desktops}
             onAddToCart={addToCart}
+            loading={loading}
           />
         </div>
       </section>
@@ -292,6 +292,7 @@ const Index = () => {
           <ProductCarousel 
             products={monitors}
             onAddToCart={addToCart}
+            loading={loading}
           />
         </div>
       </section>
@@ -308,16 +309,17 @@ const Index = () => {
           <ProductCarousel 
             products={accessories}
             onAddToCart={addToCart}
+            loading={loading}
           />
         </div>
       </section>
 
-      {/* FAQ Section */}
+      {/* FAQ Section - Always visible */}
       <FAQ />
 
       <Footer />
 
-      {/* Sticky Contact Button for Mobile */}
+      {/* Sticky Contact Button for Mobile - Always visible */}
       <StickyContact />
 
       <ShoppingCart

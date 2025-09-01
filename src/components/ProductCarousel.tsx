@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductCard from './ProductCard';
+import ProductCarouselSkeleton from './ProductCarouselSkeleton';
 import { Product } from '@/types/product';
 
 interface ProductCarouselProps {
@@ -9,13 +10,15 @@ interface ProductCarouselProps {
   onAddToCart?: (product: Product) => void;
   autoScroll?: boolean;
   title?: string;
+  loading?: boolean;
 }
 
 const ProductCarousel = ({ 
   products, 
   onAddToCart, 
   autoScroll = false,
-  title 
+  title,
+  loading = false
 }: ProductCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(4);
@@ -46,14 +49,14 @@ const ProductCarousel = ({
   const maxIndex = Math.max(0, products.length - itemsPerView);
 
   useEffect(() => {
-    if (autoScroll && products.length > itemsPerView) {
+    if (autoScroll && products.length > itemsPerView && !loading) {
       const interval = setInterval(() => {
         setCurrentIndex(prev => (prev + 1) % (maxIndex + 1));
       }, 3000);
       
       return () => clearInterval(interval);
     }
-  }, [autoScroll, maxIndex, products.length, itemsPerView]);
+  }, [autoScroll, maxIndex, products.length, itemsPerView, loading]);
 
   const scrollTo = (index: number) => {
     setCurrentIndex(Math.max(0, Math.min(index, maxIndex)));
@@ -66,6 +69,11 @@ const ProductCarousel = ({
   const prevSlide = () => {
     scrollTo(currentIndex - 1);
   };
+
+  // Show skeleton while loading
+  if (loading) {
+    return <ProductCarouselSkeleton title={title} itemsPerView={itemsPerView} />;
+  }
 
   if (products.length === 0) {
     return null;

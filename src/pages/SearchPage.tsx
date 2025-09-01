@@ -1,8 +1,10 @@
+
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
+import ProductCardSkeleton from '../components/ProductCardSkeleton';
 import ShoppingCart from '../components/ShoppingCart';
 import { useProducts } from '../hooks/useProducts';
 import { Product, CartItem } from '@/types/product';
@@ -64,7 +66,7 @@ const SearchPage = () => {
   const cartItemsCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   // Improved search filter - more flexible matching
-  const searchResults = products.filter(product => {
+  const searchResults = loading ? [] : products.filter(product => {
     if (!query.trim()) return false;
     
     const searchTerm = query.toLowerCase().trim();
@@ -95,17 +97,6 @@ const SearchPage = () => {
     );
   });
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading products...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <Header cartItemsCount={cartItemsCount} onCartOpen={() => setIsCartOpen(true)} />
@@ -117,13 +108,23 @@ const SearchPage = () => {
           </h1>
           {query && (
             <p className="text-muted-foreground text-sm sm:text-base">
-              Showing results for "{query}" ({searchResults.length} found)
+              {loading ? (
+                `Searching for "${query}"...`
+              ) : (
+                `Showing results for "${query}" (${searchResults.length} found)`
+              )}
             </p>
           )}
         </div>
 
         {query ? (
-          searchResults.length > 0 ? (
+          loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <ProductCardSkeleton key={index} />
+              ))}
+            </div>
+          ) : searchResults.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
               {searchResults.map((product) => (
                 <ProductCard 
