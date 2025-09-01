@@ -2,6 +2,16 @@
 import { Phone, Instagram, Mail, MapPin, Clock } from 'lucide-react';
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
+  const openCnBWhatsApp = () => {
+    const phoneNumber = "254114399034";
+    const message = "👋 Hello CnB!\n\nI visited Plug Tech Business website and wanted to get in touch.\n\nThank you! 🙏";
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
     <footer className="bg-muted mt-16">
       <div className="container-custom py-12">
@@ -100,7 +110,7 @@ const Footer = () => {
                 <div>
                   <div className="flex justify-between">
                     <span>Mon - Sat:</span>
-                    <span>7AM - 9PM</span>
+                    <span>9AM - 7PM</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Closed on Sundays</span>
@@ -113,7 +123,19 @@ const Footer = () => {
 
         <div className="border-t border-border mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-            <p>&copy; 2025 Plug Tech Business. All rights reserved.</p>
+            <div className="flex flex-col md:flex-row items-center gap-2">
+              <p>&copy; {currentYear} Plug Tech Business. All rights reserved.</p>
+              <span className="hidden md:inline">•</span>
+              <p>
+                Made with ❤️ by{' '}
+                <button 
+                  onClick={openCnBWhatsApp}
+                  className="text-primary hover:text-primary/80 font-medium underline transition-colors duration-200"
+                >
+                  CnB
+                </button>
+              </p>
+            </div>
             <div className="flex gap-6">
               <span>Quality Guaranteed</span>
               <span>•</span>
