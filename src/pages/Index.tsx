@@ -103,7 +103,7 @@ const Index = () => {
     },
   ];
 
-  const featuredProduct = loading ? null : products.find(p => p.name.includes('HP ProBook'));
+  const featuredProducts = loading ? [] : products.slice(0, 6); // Get first 6 products as featured
   const latestProducts = loading ? [] : products.slice(0, 8);
   const laptops = loading ? [] : products.filter(p => p.category === 'laptops');
   const gaming = loading ? [] : products.filter(p => p.category === 'gaming');
@@ -149,21 +149,19 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Featured Product with loading state */}
+            {/* Featured Products Carousel */}
             <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="text-center mb-4">
                 <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium animate-pulse">
-                  ⚡ Featured Deal - Limited Time!
+                  ⚡ Featured Deals - Limited Time!
                 </span>
               </div>
-              {loading || !featuredProduct ? (
-                <ProductCardSkeleton />
-              ) : (
-                <ProductCard 
-                  product={featuredProduct} 
-                  onAddToCart={addToCart}
-                />
-              )}
+              <ProductCarousel 
+                products={featuredProducts}
+                onAddToCart={addToCart}
+                autoScroll={true}
+                loading={loading}
+              />
             </div>
           </div>
         </div>
