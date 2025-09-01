@@ -36,7 +36,7 @@ const Header = ({ cartItemsCount = 0, onCartOpen }: HeaderProps) => {
                 <Phone className="w-3 h-3" />
                 <span className="hidden sm:inline">0711 483 989</span>
               </a>
-              <span className="hidden md:inline">Rasumal House, Shop 5, 1st Floor, Tom Mboya St, Nairobi</span>
+              <span className="hidden md:inline">Rasumal House, Shop 5, 1st Floor, Tom Mboya St, Nairobi (Ask For Collins)</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-xs">Follow us:</span>

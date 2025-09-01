@@ -77,8 +77,8 @@ const ContactPage = () => {
                 <Mail className="w-5 h-5" />
                 <div>
                   <p className="font-medium">Email</p>
-                  <a href="mailto:info@plugtechbusiness.com" className="text-primary hover:underline">
-                    info@plugtechbusiness.com
+                  <a href="mailto:collinskimtai1999@gmail.com" className="text-primary hover:underline">
+                    collinskimtai1999@gmail.com
                   </a>
                 </div>
               </div>
@@ -88,7 +88,7 @@ const ContactPage = () => {
                 <div>
                   <p className="font-medium">Address</p>
                   <p>Rasumal House, Shop 5, 1st Floor</p>
-                  <p>Tom Mboya Street, Nairobi</p>
+                  <p>Tom Mboya Street, Nairobi (Ask For Collins)</p>
                 </div>
               </div>
 
