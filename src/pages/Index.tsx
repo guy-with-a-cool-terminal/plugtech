@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Laptop, Monitor, Gamepad2, HardDrive, Headphones, Star } from 'lucide-react';
 import Header from '../components/Header';
@@ -103,7 +102,7 @@ const Index = () => {
     },
   ];
 
-  const featuredProducts = loading ? [] : products.slice(0, 6); // Get first 6 products as featured
+  const featuredProducts = loading ? [] : products.slice(0, 3); // Reduced to 3 products for better display
   const latestProducts = loading ? [] : products.slice(0, 8);
   const laptops = loading ? [] : products.filter(p => p.category === 'laptops');
   const gaming = loading ? [] : products.filter(p => p.category === 'gaming');
@@ -149,19 +148,21 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Featured Products Carousel */}
-            <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="text-center mb-4">
-                <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium animate-pulse">
+            {/* Featured Products Carousel with better sizing */}
+            <div className="bg-card border border-border rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="text-center mb-6">
+                <span className="bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-medium animate-pulse">
                   ⚡ Featured Deals - Limited Time!
                 </span>
               </div>
-              <ProductCarousel 
-                products={featuredProducts}
-                onAddToCart={addToCart}
-                autoScroll={true}
-                loading={loading}
-              />
+              <div className="min-h-[400px]">
+                <ProductCarousel 
+                  products={featuredProducts}
+                  onAddToCart={addToCart}
+                  autoScroll={true}
+                  loading={loading}
+                />
+              </div>
             </div>
           </div>
         </div>
