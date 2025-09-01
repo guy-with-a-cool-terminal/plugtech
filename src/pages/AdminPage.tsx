@@ -55,6 +55,15 @@ const AdminPage = () => {
     image: ''
   });
 
+  useEffect(() => {
+    // Log current auth state for debugging
+    console.log('Admin page - Auth state:', { 
+      user: user ? { id: user.id, email: user.email } : null, 
+      isAdmin, 
+      authLoading 
+    });
+  }, [user, isAdmin, authLoading]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginLoading(true);
@@ -74,6 +83,7 @@ const AdminPage = () => {
         });
       }
     } catch (error) {
+      console.error('Login error:', error);
       toast({
         title: "Error",
         description: "An unexpected error occurred. Please try again.",
@@ -88,6 +98,10 @@ const AdminPage = () => {
     await signOut();
     setEmail('');
     setPassword('');
+    toast({
+      title: "Signed Out",
+      description: "You have been successfully signed out.",
+    });
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -178,12 +192,21 @@ const AdminPage = () => {
 
       if (editingProduct) {
         await updateProduct(editingProduct.id, productData);
+        toast({
+          title: "Product Updated",
+          description: "Product has been successfully updated.",
+        });
       } else {
         await addProduct(productData);
+        toast({
+          title: "Product Added",
+          description: "Product has been successfully added.",
+        });
       }
 
       resetForm();
     } catch (error: any) {
+      console.error('Product save error:', error);
       toast({
         title: "Error",
         description: error.message || "Failed to save product. Please try again.",
@@ -232,7 +255,20 @@ const AdminPage = () => {
     }
 
     if (confirm('Are you sure you want to delete this product?')) {
-      await deleteProduct(productId);
+      try {
+        await deleteProduct(productId);
+        toast({
+          title: "Product Deleted",
+          description: "Product has been successfully deleted.",
+        });
+      } catch (error) {
+        console.error('Delete product error:', error);
+        toast({
+          title: "Error",
+          description: "Failed to delete product. Please try again.",
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -270,34 +306,36 @@ const AdminPage = () => {
 
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="admin-email" className="block text-sm font-medium text-foreground mb-2">
                     Email Address
                   </label>
                   <input
                     type="email"
-                    id="email"
+                    id="admin-email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     required
                     disabled={loginLoading}
+                    placeholder="Enter your admin email"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="admin-password" className="block text-sm font-medium text-foreground mb-2">
                     Password
                   </label>
                   <div className="relative">
                     <input
                       type={showPassword ? 'text' : 'password'}
-                      id="password"
+                      id="admin-password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="w-full px-3 py-2 pr-10 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                       required
                       disabled={loginLoading}
                       minLength={6}
+                      placeholder="Enter your password"
                     />
                     <button
                       type="button"
@@ -322,6 +360,15 @@ const AdminPage = () => {
                   )}
                 </button>
               </form>
+
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() => navigate('/auth')}
+                  className="text-primary hover:text-primary/80 text-sm"
+                >
+                  Forgot password? Reset it here
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -381,6 +428,7 @@ const AdminPage = () => {
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                   required
+                  placeholder="Enter product name"
                 />
               </div>
 
@@ -407,6 +455,7 @@ const AdminPage = () => {
                   onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
                   className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                   required
+                  placeholder="Enter price"
                 />
               </div>
 
@@ -418,6 +467,7 @@ const AdminPage = () => {
                   onChange={(e) => setFormData(prev => ({ ...prev, processor: e.target.value }))}
                   className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                   required
+                  placeholder="e.g., Intel i7-12700H"
                 />
               </div>
 
@@ -429,6 +479,7 @@ const AdminPage = () => {
                   onChange={(e) => setFormData(prev => ({ ...prev, ram: e.target.value }))}
                   className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                   required
+                  placeholder="e.g., 16GB DDR4"
                 />
               </div>
 
@@ -440,6 +491,7 @@ const AdminPage = () => {
                   onChange={(e) => setFormData(prev => ({ ...prev, storage: e.target.value }))}
                   className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                   required
+                  placeholder="e.g., 512GB SSD"
                 />
               </div>
 
@@ -451,6 +503,7 @@ const AdminPage = () => {
                   onChange={(e) => setFormData(prev => ({ ...prev, display: e.target.value }))}
                   className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                   required
+                  placeholder="e.g., 15.6 FHD IPS"
                 />
               </div>
 
@@ -486,7 +539,12 @@ const AdminPage = () => {
                   <input
                     type="url"
                     value={formData.image}
-                    onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, image: e.target.value }));
+                      if (e.target.value && !selectedFile) {
+                        setImagePreview(e.target.value);
+                      }
+                    }}
                     placeholder="https://example.com/image.jpg"
                     className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                   />
@@ -548,67 +606,78 @@ const AdminPage = () => {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-muted">
-                <tr>
-                  <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Image</th>
-                  <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Name</th>
-                  <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Category</th>
-                  <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Price</th>
-                  <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Stock</th>
-                  <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {filteredProducts.map((product) => (
-                  <tr key={product.id} className="hover:bg-muted/50">
-                    <td className="px-2 sm:px-4 py-3">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded"
-                      />
-                    </td>
-                    <td className="px-2 sm:px-4 py-3">
-                      <div className="font-medium text-foreground text-xs sm:text-sm line-clamp-2 max-w-xs">
-                        {product.name}
-                      </div>
-                    </td>
-                    <td className="px-2 sm:px-4 py-3 text-xs sm:text-sm text-muted-foreground capitalize">
-                      {product.category}
-                    </td>
-                    <td className="px-2 sm:px-4 py-3 font-medium text-primary text-xs sm:text-sm">
-                      KSh {product.price.toLocaleString()}
-                    </td>
-                    <td className="px-2 sm:px-4 py-3">
-                      <span className={`inline-flex px-2 py-1 text-xs rounded-full ${
-                        product.in_stock 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-red-100 text-red-800'
-                      }`}>
-                        {product.in_stock ? 'In Stock' : 'Out of Stock'}
-                      </span>
-                    </td>
-                    <td className="px-2 sm:px-4 py-3">
-                      <div className="flex gap-1 sm:gap-2">
-                        <button
-                          onClick={() => handleEdit(product)}
-                          className="p-1 sm:p-2 text-primary hover:bg-muted rounded-lg"
-                        >
-                          <Edit className="w-3 h-3 sm:w-4 sm:h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(product.id)}
-                          className="p-1 sm:p-2 text-red-600 hover:bg-muted rounded-lg"
-                        >
-                          <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                        </button>
-                      </div>
-                    </td>
+            {filteredProducts.length === 0 ? (
+              <div className="p-8 text-center">
+                <p className="text-muted-foreground">No products found. Add some products to get started.</p>
+              </div>
+            ) : (
+              <table className="w-full">
+                <thead className="bg-muted">
+                  <tr>
+                    <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Image</th>
+                    <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Name</th>
+                    <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Category</th>
+                    <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Price</th>
+                    <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Stock</th>
+                    <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium text-foreground">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {filteredProducts.map((product) => (
+                    <tr key={product.id} className="hover:bg-muted/50">
+                      <td className="px-2 sm:px-4 py-3">
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded"
+                          onError={(e) => {
+                            e.currentTarget.src = 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=400&fit=crop&crop=center';
+                          }}
+                        />
+                      </td>
+                      <td className="px-2 sm:px-4 py-3">
+                        <div className="font-medium text-foreground text-xs sm:text-sm line-clamp-2 max-w-xs">
+                          {product.name}
+                        </div>
+                      </td>
+                      <td className="px-2 sm:px-4 py-3 text-xs sm:text-sm text-muted-foreground capitalize">
+                        {product.category}
+                      </td>
+                      <td className="px-2 sm:px-4 py-3 font-medium text-primary text-xs sm:text-sm">
+                        KSh {product.price.toLocaleString()}
+                      </td>
+                      <td className="px-2 sm:px-4 py-3">
+                        <span className={`inline-flex px-2 py-1 text-xs rounded-full ${
+                          product.in_stock 
+                            ? 'bg-green-100 text-green-800' 
+                            : 'bg-red-100 text-red-800'
+                        }`}>
+                          {product.in_stock ? 'In Stock' : 'Out of Stock'}
+                        </span>
+                      </td>
+                      <td className="px-2 sm:px-4 py-3">
+                        <div className="flex gap-1 sm:gap-2">
+                          <button
+                            onClick={() => handleEdit(product)}
+                            className="p-1 sm:p-2 text-primary hover:bg-muted rounded-lg"
+                            title="Edit product"
+                          >
+                            <Edit className="w-3 h-3 sm:w-4 sm:h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(product.id)}
+                            className="p-1 sm:p-2 text-red-600 hover:bg-muted rounded-lg"
+                            title="Delete product"
+                          >
+                            <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>
