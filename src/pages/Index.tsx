@@ -5,6 +5,11 @@ import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
 import ShoppingCart from '../components/ShoppingCart';
 import WhatsAppButton from '../components/WhatsAppButton';
+import TrustBadges from '../components/TrustBadges';
+import WhyChooseUs from '../components/WhyChooseUs';
+import FAQ from '../components/FAQ';
+import StickyContact from '../components/StickyContact';
+import SEO from '../components/SEO';
 import { useProducts } from '../hooks/useProducts';
 import { Product, CartItem } from '@/types/product';
 import ProductCarousel from '../components/ProductCarousel';
@@ -117,6 +122,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO />
       <Header cartItemsCount={cartItemsCount} onCartOpen={() => setIsCartOpen(true)} />
 
       {/* Hero Section */}
@@ -126,16 +132,17 @@ const Index = () => {
             <div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-4 sm:mb-6">
                 Quality Computer Hardware at 
-                <span className="text-primary"> Best Prices</span>
+                <span className="text-primary"> Best Prices</span> in Nairobi
               </h1>
               <p className="text-sm sm:text-base lg:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed">
                 Find the perfect laptop, desktop, or computer accessory for your needs. 
-                We offer both new and refurbished computers with guaranteed quality and competitive prices.
+                We offer both new and refurbished computers with guaranteed quality and competitive prices. 
+                Located in Nairobi CBD with 5+ years of experience.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-6 sm:mb-8">
-                <WhatsAppButton className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg transition-colors duration-200 text-center font-medium" />
-                <a href="/category/laptops" className="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-6 py-3 rounded-lg transition-colors duration-200 text-center font-medium">
+                <WhatsAppButton className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg transition-all duration-200 transform hover:scale-105 text-center font-medium" />
+                <a href="/category/laptops" className="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-6 py-3 rounded-lg transition-all duration-200 transform hover:scale-105 text-center font-medium">
                   Browse Laptops
                 </a>
               </div>
@@ -143,18 +150,19 @@ const Index = () => {
               <div className="flex flex-wrap items-center gap-4 lg:gap-6 text-xs sm:text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <span>Quality Guaranteed</span>
+                  <span>30-Day Warranty</span>
                 </div>
-                <div>Competitive Prices</div>
+                <div>5+ Years Experience</div>
+                <div>Nairobi CBD Location</div>
                 <div>Expert Support</div>
               </div>
             </div>
 
             {featuredProduct && (
-              <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 shadow-lg">
+              <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="text-center mb-4">
-                  <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
-                    Featured Deal
+                  <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium animate-pulse">
+                    ⚡ Featured Deal - Limited Time!
                   </span>
                 </div>
                 <ProductCard 
@@ -167,6 +175,9 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Trust Badges */}
+      <TrustBadges />
+
       {/* Categories */}
       <section className="py-12 sm:py-16">
         <div className="container mx-auto px-4">
@@ -178,21 +189,21 @@ const Index = () => {
                 <a
                   key={category.name}
                   href={`/category/${category.name.toLowerCase()}`}
-                  className="group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                  className="group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:scale-105"
                 >
                   <div className="relative h-24 sm:h-32 lg:h-40">
                     <img
                       src={category.image}
-                      alt={category.name}
-                      className="w-full h-full object-cover"
+                      alt={`${category.name} - Best prices in Nairobi`}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                      <Icon className="w-6 h-6 sm:w-8 sm:h-8 lg:w-12 lg:h-12 text-white" />
+                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center group-hover:bg-opacity-30 transition-all duration-300">
+                      <Icon className="w-6 h-6 sm:w-8 sm:h-8 lg:w-12 lg:h-12 text-white group-hover:scale-110 transition-transform duration-300" />
                     </div>
                   </div>
                   <div className="p-2 sm:p-3 lg:p-4 text-center">
-                    <h3 className="font-semibold text-foreground mb-1 text-xs sm:text-sm lg:text-base">{category.name}</h3>
-                    <p className="text-xs text-muted-foreground">{category.count} Products</p>
+                    <h3 className="font-semibold text-foreground mb-1 text-xs sm:text-sm lg:text-base group-hover:text-primary transition-colors duration-200">{category.name}</h3>
+                    <p className="text-xs text-muted-foreground">{category.count} Products Available</p>
                   </div>
                 </a>
               );
@@ -211,19 +222,22 @@ const Index = () => {
             autoScroll={true}
           />
           <div className="text-center mt-8">
-            <a href="/category/laptops" className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg transition-colors duration-200 inline-block font-medium">
+            <a href="/category/laptops" className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg transition-all duration-200 transform hover:scale-105 inline-block font-medium">
               View All Products
             </a>
           </div>
         </div>
       </section>
 
-      {/* Laptops Carousel */}
+      {/* Why Choose Us */}
+      <WhyChooseUs />
+
+      {/* Product Category Carousels */}
       <section className="py-16">
-        <div className="container-custom">
+        <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-            <h2 className="text-2xl font-bold text-foreground">Popular Laptops</h2>
-            <a href="/category/laptops" className="text-primary hover:text-primary-hover font-medium">
+            <h2 className="text-2xl font-bold text-foreground">Popular Laptops in Nairobi</h2>
+            <a href="/category/laptops" className="text-primary hover:text-primary/80 font-medium transition-colors duration-200">
               View All Laptops →
             </a>
           </div>
@@ -236,10 +250,10 @@ const Index = () => {
 
       {/* Gaming Carousel */}
       <section className="py-16 bg-muted/50">
-        <div className="container-custom">
+        <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-            <h2 className="text-2xl font-bold text-foreground">Gaming Computers</h2>
-            <a href="/category/gaming" className="text-primary hover:text-primary-hover font-medium">
+            <h2 className="text-2xl font-bold text-foreground">Gaming Computers & Laptops</h2>
+            <a href="/category/gaming" className="text-primary hover:text-primary/80 font-medium transition-colors duration-200">
               View All Gaming →
             </a>
           </div>
@@ -298,7 +312,13 @@ const Index = () => {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <FAQ />
+
       <Footer />
+
+      {/* Sticky Contact Button for Mobile */}
+      <StickyContact />
 
       <ShoppingCart
         isOpen={isCartOpen}
