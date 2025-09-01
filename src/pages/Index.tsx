@@ -14,6 +14,7 @@ import SEO from '../components/SEO';
 import { useProducts } from '../hooks/useProducts';
 import { Product, CartItem } from '@/types/product';
 import ProductCarousel from '../components/ProductCarousel';
+import FeaturedProductCard from '../components/FeaturedProductCard';
 
 const Index = () => {
   const { products, loading } = useProducts();
@@ -102,7 +103,7 @@ const Index = () => {
     },
   ];
 
-  const featuredProducts = loading ? [] : products.slice(0, 3); // Reduced to 3 products for better display
+  const featuredProducts = loading ? [] : products.slice(0, 5); // Get first 5 products for rotation
   const latestProducts = loading ? [] : products.slice(0, 8);
   const laptops = loading ? [] : products.filter(p => p.category === 'laptops');
   const gaming = loading ? [] : products.filter(p => p.category === 'gaming');
@@ -148,22 +149,12 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Featured Products Carousel with better sizing */}
-            <div className="bg-card border border-border rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="text-center mb-6">
-                <span className="bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-medium animate-pulse">
-                  ⚡ Featured Deals - Limited Time!
-                </span>
-              </div>
-              <div className="min-h-[400px]">
-                <ProductCarousel 
-                  products={featuredProducts}
-                  onAddToCart={addToCart}
-                  autoScroll={true}
-                  loading={loading}
-                />
-              </div>
-            </div>
+            {/* Featured Product Card with hover rotation */}
+            <FeaturedProductCard 
+              products={featuredProducts}
+              onAddToCart={addToCart}
+              loading={loading}
+            />
           </div>
         </div>
       </section>
