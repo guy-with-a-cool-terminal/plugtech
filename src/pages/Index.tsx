@@ -130,15 +130,22 @@ const Index = () => {
           <div className="flex items-center justify-center gap-4 text-sm font-medium">
             <div className="flex items-center gap-2">
               {/* Official M-Pesa Logo */}
-              <svg className="w-8 h-8" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="40" height="40" rx="6" fill="white"/>
-                <g transform="translate(4, 4)">
-                  {/* M-Pesa "M" logo */}
-                  <path d="M4 28V8h4.5l4.5 12 4.5-12H22v20h-3V14l-3.5 9h-2l-3.5-9v14H4z" fill="#00B04F"/>
-                  {/* Pesa dot */}
-                  <circle cx="26" cy="24" r="3" fill="#FF6600"/>
-                </g>
-              </svg>
+              <div className="bg-white rounded-sm px-2 py-1 flex items-center">
+                <svg className="w-16 h-6" viewBox="0 0 80 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* M */}
+                  <path d="M2 20V4h3l3 8 3-8h3v16h-2V8l-2.5 6h-1l-2.5-6v12H2z" fill="#00B04F"/>
+                  {/* - */}
+                  <rect x="18" y="11" width="4" height="2" fill="#00B04F"/>
+                  {/* P */}
+                  <path d="M26 20V4h6c2 0 3 1 3 3v2c0 2-1 3-3 3h-4v8h-2zm2-10h4c1 0 1-1 1-1V7c0-1 0-1-1-1h-4v4z" fill="#00B04F"/>
+                  {/* E */}
+                  <path d="M38 20V4h8v2h-6v4h5v2h-5v6h6v2h-8z" fill="#00B04F"/>
+                  {/* S */}
+                  <path d="M50 20c-2 0-3-1-3-3v-1h2v1c0 1 0 1 1 1h2c1 0 1 0 1-1v-1c0-1 0-1-1-1h-2c-2 0-3-1-3-3V9c0-2 1-3 3-3h2c2 0 3 1 3 3v1h-2V9c0-1 0-1-1-1h-2c-1 0-1 0-1 1v1c0 1 0 1 1 1h2c2 0 3 1 3 3v3c0 2-1 3-3 3h-2z" fill="#00B04F"/>
+                  {/* A */}
+                  <path d="M62 20V4h2l4 16h-2l-1-3h-4l-1 3h-2zm3-5h2l-1-4-1 4z" fill="#00B04F"/>
+                </svg>
+              </div>
               <span className="font-bold">Pay with M-Pesa</span>
             </div>
             <div className="hidden sm:block text-white/80">•</div>
