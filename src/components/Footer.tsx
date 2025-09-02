@@ -12,6 +12,14 @@ const Footer = () => {
     window.open(whatsappUrl, '_blank');
   };
 
+  const openDmXWhatsApp = () => {
+    const phoneNumber = "254724285680";
+    const message = "Hello, I saw your work on Plug Tech Business website";
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
     <footer className="bg-muted mt-16">
       <div className="container-custom py-12">
@@ -65,6 +73,11 @@ const Footer = () => {
                 </a>
               </li>
               <li>
+                <a href="/category/all-in-one" className="text-muted-foreground hover:text-primary transition-colors duration-200 text-sm">
+                  All in One
+                </a>
+              </li>
+              <li>
                 <a href="/category/monitors" className="text-muted-foreground hover:text-primary transition-colors duration-200 text-sm">
                   Monitors
                 </a>
@@ -96,6 +109,7 @@ const Footer = () => {
                 <div className="text-muted-foreground">
                   <div>Rasumal House, Shop No. 5, 1st Floor</div>
                   <div>Tom Mboya Street, Nairobi</div>
+                  <div className="font-medium text-primary mt-1">(Ask For Collins)</div>
                 </div>
               </li>
             </ul>
@@ -133,6 +147,13 @@ const Footer = () => {
                   className="text-primary hover:text-primary/80 font-medium underline transition-colors duration-200"
                 >
                   CnB
+                </button>
+                {' '}and{' '}
+                <button 
+                  onClick={openDmXWhatsApp}
+                  className="text-primary hover:text-primary/80 font-medium underline transition-colors duration-200"
+                >
+                  DmX
                 </button>
               </p>
             </div>

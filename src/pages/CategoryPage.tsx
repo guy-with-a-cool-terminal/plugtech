@@ -71,7 +71,8 @@ const CategoryPage = () => {
     desktops: 'Desktop Computers',  
     gaming: 'Gaming Computers',
     monitors: 'Monitors & Displays',
-    accessories: 'Computer Accessories'
+    accessories: 'Computer Accessories',
+    'all-in-one': 'All in One Computers'
   };
 
   const categoryTitle = categoryTitles[category || ''] || 'Products';

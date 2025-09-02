@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from 'react';
-import { Laptop, Monitor, Gamepad2, HardDrive, Headphones, Star } from 'lucide-react';
+import { Laptop, Monitor, Gamepad2, HardDrive, Headphones, Star, Settings } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
@@ -96,6 +97,12 @@ const Index = () => {
       image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=200&h=150&fit=crop&crop=center'
     },
     { 
+      name: 'All in One', 
+      icon: Settings, 
+      count: loading ? 0 : products.filter(p => p.category === 'all-in-one').length,
+      image: 'https://images.unsplash.com/photo-1527443154391-507e9dc6c5cc?w=200&h=150&fit=crop&crop=center'
+    },
+    { 
       name: 'Accessories', 
       icon: Headphones, 
       count: loading ? 0 : products.filter(p => p.category === 'accessories').length,
@@ -109,12 +116,32 @@ const Index = () => {
   const gaming = loading ? [] : products.filter(p => p.category === 'gaming');
   const desktops = loading ? [] : products.filter(p => p.category === 'desktops');
   const monitors = loading ? [] : products.filter(p => p.category === 'monitors');
+  const allInOne = loading ? [] : products.filter(p => p.category === 'all-in-one');
   const accessories = loading ? [] : products.filter(p => p.category === 'accessories');
 
   return (
     <div className="min-h-screen bg-background">
       <SEO />
       <Header cartItemsCount={cartItemsCount} onCartOpen={() => setIsCartOpen(true)} />
+
+      {/* M-Pesa Payment Banner */}
+      <div className="bg-primary text-primary-foreground py-3">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-center gap-4 text-sm font-medium">
+            <div className="flex items-center gap-2">
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+              <span>Pay with M-Pesa</span>
+            </div>
+            <div className="hidden sm:block">•</div>
+            <div className="flex items-center gap-4 text-xs sm:text-sm">
+              <span><strong>Paybill:</strong> 714888</span>
+              <span><strong>Account:</strong> 281219</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Hero Section - Always visible */}
       <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-12 sm:py-16 lg:py-20">
@@ -166,13 +193,14 @@ const Index = () => {
       <section className="py-12 sm:py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8 sm:mb-12">Shop by Category</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-6">
             {categories.map((category) => {
               const Icon = category.icon;
+              const categoryUrl = category.name === 'All in One' ? 'all-in-one' : category.name.toLowerCase();
               return (
                 <a
                   key={category.name}
-                  href={`/category/${category.name.toLowerCase()}`}
+                  href={`/category/${categoryUrl}`}
                   className="group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:scale-105"
                 >
                   <div className="relative h-24 sm:h-32 lg:h-40">
@@ -269,6 +297,25 @@ const Index = () => {
           />
         </div>
       </section>
+
+      {/* All in One Carousel */}
+      {allInOne.length > 0 && (
+        <section className="py-16 bg-muted/50">
+          <div className="container-custom">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+              <h2 className="text-2xl font-bold text-foreground">All in One Computers</h2>
+              <a href="/category/all-in-one" className="text-primary hover:text-primary-hover font-medium">
+                View All All in One →
+              </a>
+            </div>
+            <ProductCarousel 
+              products={allInOne}
+              onAddToCart={addToCart}
+              loading={loading}
+            />
+          </div>
+        </section>
+      )}
 
       {/* Monitors Carousel */}
       <section className="py-16 bg-muted/50">

@@ -444,6 +444,7 @@ const AdminPage = () => {
                   <option value="gaming">Gaming</option>
                   <option value="monitors">Monitors</option>
                   <option value="accessories">Accessories</option>
+                  <option value="all-in-one">All in One</option>
                 </select>
               </div>
 
@@ -516,6 +517,7 @@ const AdminPage = () => {
                 >
                   <option value="New">New</option>
                   <option value="Refurbished">Refurbished</option>
+                  <option value="Ex UK">Ex UK</option>
                 </select>
               </div>
 
