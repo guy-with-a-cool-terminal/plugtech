@@ -20,19 +20,43 @@ const Index = () => {
   const { products, loading } = useProducts();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCartLoading, setIsCartLoading] = useState(true); // Add loading state
 
-  // Load cart from localStorage
+  // Load cart from localStorage with error handling
   useEffect(() => {
-    const savedCart = localStorage.getItem('plugtech-cart');
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
+    const loadCart = () => {
+      try {
+        const savedCart = localStorage.getItem('plugtech-cart');
+        if (savedCart) {
+          const parsedCart = JSON.parse(savedCart);
+          // Validate the data structure
+          if (Array.isArray(parsedCart)) {
+            setCartItems(parsedCart);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading cart from localStorage:', error);
+        // Clear corrupted data
+        localStorage.removeItem('plugtech-cart');
+      } finally {
+        setIsCartLoading(false);
+      }
+    };
+
+    loadCart();
+  }, []);
+
+  // Save cart to localStorage with error handling
+  useEffect(() => {
+    // Don't save during initial load
+    if (isCartLoading) return;
+    
+    try {
+      localStorage.setItem('plugtech-cart', JSON.stringify(cartItems));
+    } catch (error) {
+      console.error('Error saving cart to localStorage:', error);
     }
-  }, []);
-
-  // Save cart to localStorage
-  useEffect(() => {
-    localStorage.setItem('plugtech-cart', JSON.stringify(cartItems));
-  }, []);
+  }, [cartItems, isCartLoading]);
 
   const addToCart = (product: Product) => {
     setCartItems(prev => {
