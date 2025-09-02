@@ -72,7 +72,7 @@ const CategoryPage = () => {
     gaming: 'Gaming Computers',
     monitors: 'Monitors & Displays',
     accessories: 'Computer Accessories',
-    'all-in-one': 'All in One Computers'
+    'all-in-one': 'All in One'
   };
 
   const categoryTitle = categoryTitles[category || ''] || 'Products';
