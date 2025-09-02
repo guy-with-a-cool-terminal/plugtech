@@ -129,12 +129,15 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center gap-4 text-sm font-medium">
             <div className="flex items-center gap-2">
-              {/* M-Pesa Logo SVG */}
-              <svg className="w-8 h-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="100" height="100" rx="12" fill="white"/>
-                <path d="M20 30h15l8 25 8-25h15v40h-10V45l-6 20h-4l-6-20v25H20V30z" fill="#00D13A"/>
-                <path d="M75 55c0 8-6 15-15 15s-15-7-15-15V45c0-8 6-15 15-15s15 7 15 15v10z" fill="#FF6B00"/>
-                <circle cx="60" cy="50" r="8" fill="white"/>
+              {/* Official M-Pesa Logo */}
+              <svg className="w-8 h-8" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" rx="6" fill="white"/>
+                <g transform="translate(4, 4)">
+                  {/* M-Pesa "M" logo */}
+                  <path d="M4 28V8h4.5l4.5 12 4.5-12H22v20h-3V14l-3.5 9h-2l-3.5-9v14H4z" fill="#00B04F"/>
+                  {/* Pesa dot */}
+                  <circle cx="26" cy="24" r="3" fill="#FF6600"/>
+                </g>
               </svg>
               <span className="font-bold">Pay with M-Pesa</span>
             </div>
