@@ -18,6 +18,20 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   const stockLevel = Math.floor(Math.random() * 8) + 1;
   const isLimitedStock = stockLevel <= 3;
 
+  // Get condition badge styling
+  const getConditionBadgeStyle = (condition: string) => {
+    switch (condition.toLowerCase()) {
+      case 'new':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'refurbished':
+        return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'ex uk':
+        return 'bg-purple-100 text-purple-800 border-purple-200';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
   return (
     <div className="bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group w-full h-full flex flex-col transform hover:-translate-y-1">
       <div className="relative overflow-hidden aspect-[4/3]">
@@ -49,11 +63,17 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
           )}
         </div>
 
-        {hasOffer && (
-          <div className="absolute top-2 right-2 bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-medium animate-pulse">
-            Limited Offer!
+        {/* Condition Badge */}
+        <div className="absolute top-2 right-2 flex flex-col gap-1">
+          {hasOffer && (
+            <div className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-medium animate-pulse">
+              Limited Offer!
+            </div>
+          )}
+          <div className={`px-2 py-1 rounded-full text-xs font-medium border ${getConditionBadgeStyle(product.condition)}`}>
+            {product.condition}
           </div>
-        )}
+        </div>
 
         {/* Warranty badge */}
         <div className="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

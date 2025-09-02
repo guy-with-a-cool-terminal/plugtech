@@ -125,16 +125,20 @@ const Index = () => {
       <Header cartItemsCount={cartItemsCount} onCartOpen={() => setIsCartOpen(true)} />
 
       {/* M-Pesa Payment Banner */}
-      <div className="bg-primary text-primary-foreground py-3">
+      <div className="bg-gradient-to-r from-green-600 to-green-700 text-white py-3">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center gap-4 text-sm font-medium">
             <div className="flex items-center gap-2">
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              {/* M-Pesa Logo SVG */}
+              <svg className="w-8 h-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" rx="12" fill="white"/>
+                <path d="M20 30h15l8 25 8-25h15v40h-10V45l-6 20h-4l-6-20v25H20V30z" fill="#00D13A"/>
+                <path d="M75 55c0 8-6 15-15 15s-15-7-15-15V45c0-8 6-15 15-15s15 7 15 15v10z" fill="#FF6B00"/>
+                <circle cx="60" cy="50" r="8" fill="white"/>
               </svg>
-              <span>Pay with M-Pesa</span>
+              <span className="font-bold">Pay with M-Pesa</span>
             </div>
-            <div className="hidden sm:block">•</div>
+            <div className="hidden sm:block text-white/80">•</div>
             <div className="flex items-center gap-4 text-xs sm:text-sm">
               <span><strong>Paybill:</strong> 714888</span>
               <span><strong>Account:</strong> 281219</span>
