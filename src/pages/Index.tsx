@@ -125,33 +125,49 @@ const Index = () => {
       <Header cartItemsCount={cartItemsCount} onCartOpen={() => setIsCartOpen(true)} />
 
       {/* M-Pesa Payment Banner */}
-      <div className="bg-gradient-to-r from-green-600 to-green-700 text-white py-3">
+      <div className="bg-gradient-to-r from-green-600 via-green-700 to-green-800 text-white py-4 shadow-sm border-b border-green-500/30">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center gap-4 text-sm font-medium">
-            <div className="flex items-center gap-2">
-              {/* Official M-Pesa Logo */}
-              <div className="bg-white rounded-sm px-2 py-1 flex items-center">
-                <svg className="w-16 h-6" viewBox="0 0 80 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+            {/* M-Pesa Logo Section */}
+            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
+              <div className="bg-white rounded px-3 py-1.5 shadow-md">
+                <svg className="w-20 h-7" viewBox="0 0 100 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                   {/* M */}
-                  <path d="M2 20V4h3l3 8 3-8h3v16h-2V8l-2.5 6h-1l-2.5-6v12H2z" fill="#00B04F"/>
+                  <path d="M2 24V4h4l4 10 4-10h4v20h-3V10l-3.5 8h-1.5l-3.5-8v14H2z" fill="#00B04F"/>
                   {/* - */}
-                  <rect x="18" y="11" width="4" height="2" fill="#00B04F"/>
+                  <rect x="22" y="13" width="5" height="2.5" rx="1" fill="#00B04F"/>
                   {/* P */}
-                  <path d="M26 20V4h6c2 0 3 1 3 3v2c0 2-1 3-3 3h-4v8h-2zm2-10h4c1 0 1-1 1-1V7c0-1 0-1-1-1h-4v4z" fill="#00B04F"/>
+                  <path d="M32 24V4h7c2.5 0 4 1.5 4 4v2c0 2.5-1.5 4-4 4h-4v10h-3zm3-13h4c1 0 1.5-0.5 1.5-1.5V8.5c0-1-0.5-1.5-1.5-1.5h-4v4z" fill="#00B04F"/>
                   {/* E */}
-                  <path d="M38 20V4h8v2h-6v4h5v2h-5v6h6v2h-8z" fill="#00B04F"/>
+                  <path d="M48 24V4h10v3h-7v5h6v3h-6v6h7v3h-10z" fill="#00B04F"/>
                   {/* S */}
-                  <path d="M50 20c-2 0-3-1-3-3v-1h2v1c0 1 0 1 1 1h2c1 0 1 0 1-1v-1c0-1 0-1-1-1h-2c-2 0-3-1-3-3V9c0-2 1-3 3-3h2c2 0 3 1 3 3v1h-2V9c0-1 0-1-1-1h-2c-1 0-1 0-1 1v1c0 1 0 1 1 1h2c2 0 3 1 3 3v3c0 2-1 3-3 3h-2z" fill="#00B04F"/>
+                  <path d="M62 24c-2.5 0-4-1.5-4-4v-1h3v1c0 0.5 0.5 1 1 1h2c0.5 0 1-0.5 1-1v-1c0-0.5-0.5-1-1-1h-2c-2.5 0-4-1.5-4-4V11c0-2.5 1.5-4 4-4h2c2.5 0 4 1.5 4 4v1h-3v-1c0-0.5-0.5-1-1-1h-2c-0.5 0-1 0.5-1 1v1c0 0.5 0.5 1 1 1h2c2.5 0 4 1.5 4 4v3c0 2.5-1.5 4-4 4h-2z" fill="#00B04F"/>
                   {/* A */}
-                  <path d="M62 20V4h2l4 16h-2l-1-3h-4l-1 3h-2zm3-5h2l-1-4-1 4z" fill="#00B04F"/>
+                  <path d="M78 24V4h3l5 20h-3l-1-4h-5l-1 4h-3zm4-7h3l-1.5-6-1.5 6z" fill="#00B04F"/>
                 </svg>
               </div>
-              <span className="font-bold">Pay with M-Pesa</span>
+              <div className="text-left">
+                <div className="font-bold text-lg">Pay with M-Pesa</div>
+                <div className="text-green-100 text-xs">Secure & Instant Payment</div>
+              </div>
             </div>
-            <div className="hidden sm:block text-white/80">•</div>
-            <div className="flex items-center gap-4 text-xs sm:text-sm">
-              <span><strong>Paybill:</strong> 714888</span>
-              <span><strong>Account:</strong> 281219</span>
+            
+            {/* Payment Details */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
+                <div className="text-xs text-green-100 font-medium mb-1">Paybill Number</div>
+                <div className="font-bold text-xl tracking-wider">714888</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
+                <div className="text-xs text-green-100 font-medium mb-1">Account Number</div>
+                <div className="font-bold text-xl tracking-wider">281219</div>
+              </div>
+            </div>
+
+            {/* Trust Badge */}
+            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2 border border-white/20">
+              <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
+              <span className="text-xs font-medium">Trusted Payment Partner</span>
             </div>
           </div>
         </div>
