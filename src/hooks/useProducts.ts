@@ -12,7 +12,7 @@ export const useProducts = () => {
     try {
       const { data, error } = await supabase
         .from('products')
-        .select('*')
+        .select('id, name, category, price, image, image_version, processor, ram, storage, display, condition, in_stock, date_added, created_at, updated_at')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -34,7 +34,7 @@ export const useProducts = () => {
       const { data, error } = await supabase
         .from('products')
         .insert([productData])
-        .select()
+        .select('id, name, category, price, image, image_version, processor, ram, storage, display, condition, in_stock, date_added, created_at, updated_at')
         .single();
 
       if (error) throw error;
@@ -64,7 +64,7 @@ export const useProducts = () => {
         .from('products')
         .update(productData)
         .eq('id', id)
-        .select()
+        .select('id, name, category, price, image, image_version, processor, ram, storage, display, condition, in_stock, date_added, created_at, updated_at')
         .single();
 
       if (error) throw error;
