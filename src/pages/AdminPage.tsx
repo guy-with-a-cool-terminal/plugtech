@@ -7,6 +7,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { getOptimizedImageUrl } from '@/utils/imageOptimization';
 
 interface Product {
   id: string;
@@ -634,9 +635,12 @@ const AdminPage = () => {
                     <tr key={product.id} className="hover:bg-muted/50">
                       <td className="px-2 sm:px-4 py-3">
                         <img
-                          src={product.image}
+                          src={getOptimizedImageUrl(product.image, product.image_version, { width: 100, height: 100, quality: 80 })}
                           alt={product.name}
+                          width={48}
+                          height={48}
                           className="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded"
+                          loading="lazy"
                           onError={(e) => {
                             e.currentTarget.src = 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=400&fit=crop&crop=center';
                           }}

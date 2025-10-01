@@ -3,6 +3,7 @@ import { ShoppingCart, Star, Clock, Shield } from 'lucide-react';
 import { Product } from '@/types/product';
 import CountdownTimer from './CountdownTimer';
 import WhatsAppButton from './WhatsAppButton';
+import { getOptimizedImageUrl, getImageSrcSet } from '@/utils/imageOptimization';
 
 interface ProductCardProps {
   product: Product;
@@ -34,12 +35,17 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
 
   return (
     <div className="bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group w-full h-full flex flex-col transform hover:-translate-y-1">
-      <div className="relative overflow-hidden aspect-[4/3]">
+      <div className="relative overflow-hidden aspect-[4/3] bg-muted">
         <img
-          src={`${product.image}?v=${product.image_version}`}
+          src={getOptimizedImageUrl(product.image, product.image_version, { width: 400, height: 300, quality: 85 })}
+          srcSet={getImageSrcSet(product.image, product.image_version)}
+          sizes="(max-width: 640px) 300px, (max-width: 1024px) 400px, 600px"
           alt={product.name}
+          width={400}
+          height={300}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           loading="lazy"
+          decoding="async"
         />
         
         {/* Status badges */}
