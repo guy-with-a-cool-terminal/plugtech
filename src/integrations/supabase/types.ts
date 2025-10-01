@@ -23,6 +23,7 @@ export type Database = {
           display: string
           id: string
           image: string
+          image_version: number
           in_stock: boolean
           name: string
           price: number
@@ -39,6 +40,7 @@ export type Database = {
           display: string
           id?: string
           image: string
+          image_version?: number
           in_stock?: boolean
           name: string
           price: number
@@ -55,6 +57,7 @@ export type Database = {
           display?: string
           id?: string
           image?: string
+          image_version?: number
           in_stock?: boolean
           name?: string
           price?: number
