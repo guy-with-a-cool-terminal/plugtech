@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { ShoppingCart, Phone, Menu, X, Search } from 'lucide-react';
 
 interface HeaderProps {
@@ -75,21 +75,21 @@ const Header = ({ cartItemsCount = 0, onCartOpen }: HeaderProps) => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="/" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <div className="text-xl sm:text-2xl font-bold text-primary">
               Plug Tech Business
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <a href="/" className="text-foreground hover:text-primary transition-colors">Home</a>
-            <a href="/category/laptops" className="text-foreground hover:text-primary transition-colors">Laptops</a>
-            <a href="/category/desktops" className="text-foreground hover:text-primary transition-colors">Desktops</a>
-            <a href="/category/gaming" className="text-foreground hover:text-primary transition-colors">Gaming</a>
-            <a href="/category/monitors" className="text-foreground hover:text-primary transition-colors">Monitors</a>
-            <a href="/category/accessories" className="text-foreground hover:text-primary transition-colors">Accessories</a>
-            <a href="/contact" className="text-foreground hover:text-primary transition-colors">Contact</a>
+            <Link to="/" className="text-foreground hover:text-primary transition-colors">Home</Link>
+            <Link to="/category/laptops" className="text-foreground hover:text-primary transition-colors">Laptops</Link>
+            <Link to="/category/desktops" className="text-foreground hover:text-primary transition-colors">Desktops</Link>
+            <Link to="/category/gaming" className="text-foreground hover:text-primary transition-colors">Gaming</Link>
+            <Link to="/category/monitors" className="text-foreground hover:text-primary transition-colors">Monitors</Link>
+            <Link to="/category/accessories" className="text-foreground hover:text-primary transition-colors">Accessories</Link>
+            <Link to="/contact" className="text-foreground hover:text-primary transition-colors">Contact</Link>
           </nav>
 
           {/* Search Bar - Desktop */}
@@ -151,13 +151,13 @@ const Header = ({ cartItemsCount = 0, onCartOpen }: HeaderProps) => {
         {isMobileMenuOpen && (
           <nav className="lg:hidden mt-4 pb-4 border-t border-border pt-4">
             <div className="flex flex-col space-y-4">
-              <a href="/" className="text-foreground hover:text-primary transition-colors py-2">Home</a>
-              <a href="/category/laptops" className="text-foreground hover:text-primary transition-colors py-2">Laptops</a>
-              <a href="/category/desktops" className="text-foreground hover:text-primary transition-colors py-2">Desktops</a>
-              <a href="/category/gaming" className="text-foreground hover:text-primary transition-colors py-2">Gaming</a>
-              <a href="/category/monitors" className="text-foreground hover:text-primary transition-colors py-2">Monitors</a>
-              <a href="/category/accessories" className="text-foreground hover:text-primary transition-colors py-2">Accessories</a>
-              <a href="/contact" className="text-foreground hover:text-primary transition-colors py-2">Contact</a>
+              <Link to="/" className="text-foreground hover:text-primary transition-colors py-2" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+              <Link to="/category/laptops" className="text-foreground hover:text-primary transition-colors py-2" onClick={() => setIsMobileMenuOpen(false)}>Laptops</Link>
+              <Link to="/category/desktops" className="text-foreground hover:text-primary transition-colors py-2" onClick={() => setIsMobileMenuOpen(false)}>Desktops</Link>
+              <Link to="/category/gaming" className="text-foreground hover:text-primary transition-colors py-2" onClick={() => setIsMobileMenuOpen(false)}>Gaming</Link>
+              <Link to="/category/monitors" className="text-foreground hover:text-primary transition-colors py-2" onClick={() => setIsMobileMenuOpen(false)}>Monitors</Link>
+              <Link to="/category/accessories" className="text-foreground hover:text-primary transition-colors py-2" onClick={() => setIsMobileMenuOpen(false)}>Accessories</Link>
+              <Link to="/contact" className="text-foreground hover:text-primary transition-colors py-2" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
             </div>
           </nav>
         )}
