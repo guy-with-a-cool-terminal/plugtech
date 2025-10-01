@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ShoppingCart, Phone, Menu, X, Search } from 'lucide-react';
