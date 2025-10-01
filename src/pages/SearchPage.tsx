@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -18,18 +18,30 @@ const SearchPage = () => {
 
   // Load cart from localStorage
   useEffect(() => {
-    const savedCart = localStorage.getItem('plugtech-cart');
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
+    try {
+      const savedCart = localStorage.getItem('plugtech-cart');
+      if (savedCart) {
+        const parsedCart = JSON.parse(savedCart);
+        if (Array.isArray(parsedCart)) {
+          setCartItems(parsedCart);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading cart:', error);
+      localStorage.removeItem('plugtech-cart');
     }
   }, []);
 
   // Save cart to localStorage
   useEffect(() => {
-    localStorage.setItem('plugtech-cart', JSON.stringify(cartItems));
+    try {
+      localStorage.setItem('plugtech-cart', JSON.stringify(cartItems));
+    } catch (error) {
+      console.error('Error saving cart:', error);
+    }
   }, [cartItems]);
 
-  const addToCart = (product: Product) => {
+  const addToCart = useCallback((product: Product) => {
     setCartItems(prev => {
       const existingItem = prev.find(item => item.id === product.id);
       if (existingItem) {
@@ -41,9 +53,9 @@ const SearchPage = () => {
       }
       return [...prev, { ...product, quantity: 1 }];
     });
-  };
+  }, []);
 
-  const updateCartQuantity = (id: string, quantity: number) => {
+  const updateCartQuantity = useCallback((id: string, quantity: number) => {
     if (quantity === 0) {
       removeFromCart(id);
     } else {
@@ -53,49 +65,55 @@ const SearchPage = () => {
         )
       );
     }
-  };
+  }, []);
 
-  const removeFromCart = (id: string) => {
+  const removeFromCart = useCallback((id: string) => {
     setCartItems(prev => prev.filter(item => item.id !== id));
-  };
+  }, []);
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setCartItems([]);
-  };
+  }, []);
 
-  const cartItemsCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const cartItemsCount = useMemo(() => 
+    cartItems.reduce((sum, item) => sum + item.quantity, 0),
+    [cartItems]
+  );
 
-  // Improved search filter - more flexible matching
-  const searchResults = loading ? [] : products.filter(product => {
-    if (!query.trim()) return false;
+  // Memoized search results - only recalculate when products or query changes
+  const searchResults = useMemo(() => {
+    if (loading || !query.trim()) return [];
     
     const searchTerm = query.toLowerCase().trim();
-    const productName = product.name.toLowerCase();
-    const productCategory = product.category.toLowerCase();
-    const productCondition = product.condition.toLowerCase();
     
-    // Check if search term matches any part of the product
-    return (
-      productName.includes(searchTerm) ||
-      productCategory.includes(searchTerm) ||
-      productCondition.includes(searchTerm) ||
-      product.processor.toLowerCase().includes(searchTerm) ||
-      product.ram.toLowerCase().includes(searchTerm) ||
-      product.storage.toLowerCase().includes(searchTerm) ||
-      product.display.toLowerCase().includes(searchTerm) ||
-      // Split search term by spaces and check if any word matches
-      searchTerm.split(' ').some(word => 
-        word.length > 0 && (
-          productName.includes(word) ||
-          productCategory.includes(word) ||
-          product.processor.toLowerCase().includes(word) ||
-          product.ram.toLowerCase().includes(word) ||
-          product.storage.toLowerCase().includes(word) ||
-          product.display.toLowerCase().includes(word)
+    return products.filter(product => {
+      const productName = product.name.toLowerCase();
+      const productCategory = product.category.toLowerCase();
+      const productCondition = product.condition.toLowerCase();
+      
+      // Check if search term matches any part of the product
+      return (
+        productName.includes(searchTerm) ||
+        productCategory.includes(searchTerm) ||
+        productCondition.includes(searchTerm) ||
+        product.processor.toLowerCase().includes(searchTerm) ||
+        product.ram.toLowerCase().includes(searchTerm) ||
+        product.storage.toLowerCase().includes(searchTerm) ||
+        product.display.toLowerCase().includes(searchTerm) ||
+        // Split search term by spaces and check if any word matches
+        searchTerm.split(' ').some(word => 
+          word.length > 0 && (
+            productName.includes(word) ||
+            productCategory.includes(word) ||
+            product.processor.toLowerCase().includes(word) ||
+            product.ram.toLowerCase().includes(word) ||
+            product.storage.toLowerCase().includes(word) ||
+            product.display.toLowerCase().includes(word)
+          )
         )
-      )
-    );
-  });
+      );
+    });
+  }, [products, query, loading]);
 
   return (
     <div className="min-h-screen bg-background">

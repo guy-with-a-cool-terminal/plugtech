@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
@@ -17,18 +17,30 @@ const CategoryPage = () => {
 
   // Load cart from localStorage
   useEffect(() => {
-    const savedCart = localStorage.getItem('plugtech-cart');
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
+    try {
+      const savedCart = localStorage.getItem('plugtech-cart');
+      if (savedCart) {
+        const parsedCart = JSON.parse(savedCart);
+        if (Array.isArray(parsedCart)) {
+          setCartItems(parsedCart);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading cart:', error);
+      localStorage.removeItem('plugtech-cart');
     }
   }, []);
 
   // Save cart to localStorage
   useEffect(() => {
-    localStorage.setItem('plugtech-cart', JSON.stringify(cartItems));
+    try {
+      localStorage.setItem('plugtech-cart', JSON.stringify(cartItems));
+    } catch (error) {
+      console.error('Error saving cart:', error);
+    }
   }, [cartItems]);
 
-  const addToCart = (product: Product) => {
+  const addToCart = useCallback((product: Product) => {
     setCartItems(prev => {
       const existingItem = prev.find(item => item.id === product.id);
       if (existingItem) {
@@ -40,9 +52,9 @@ const CategoryPage = () => {
       }
       return [...prev, { ...product, quantity: 1 }];
     });
-  };
+  }, []);
 
-  const updateCartQuantity = (id: string, quantity: number) => {
+  const updateCartQuantity = useCallback((id: string, quantity: number) => {
     if (quantity === 0) {
       removeFromCart(id);
     } else {
@@ -52,19 +64,26 @@ const CategoryPage = () => {
         )
       );
     }
-  };
+  }, []);
 
-  const removeFromCart = (id: string) => {
+  const removeFromCart = useCallback((id: string) => {
     setCartItems(prev => prev.filter(item => item.id !== id));
-  };
+  }, []);
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setCartItems([]);
-  };
+  }, []);
 
-  const cartItemsCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const cartItemsCount = useMemo(() => 
+    cartItems.reduce((sum, item) => sum + item.quantity, 0),
+    [cartItems]
+  );
   
-  const filteredProducts = loading ? [] : products.filter(product => product.category === category);
+  // Memoize filtered products
+  const filteredProducts = useMemo(() => 
+    loading ? [] : products.filter(product => product.category === category),
+    [products, category, loading]
+  );
   
   const categoryTitles: Record<string, string> = {
     laptops: 'Laptops',

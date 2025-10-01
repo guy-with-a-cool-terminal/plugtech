@@ -1,4 +1,5 @@
 
+import { memo } from 'react';
 import { ShoppingCart, Star, Clock, Shield } from 'lucide-react';
 import { Product } from '@/types/product';
 import CountdownTimer from './CountdownTimer';
@@ -10,7 +11,7 @@ interface ProductCardProps {
   onAddToCart: (product: Product) => void;
 }
 
-const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
+const ProductCard = memo(({ product, onAddToCart }: ProductCardProps) => {
   // Check if product has an active offer (assuming products with discount have offers)
   const hasOffer = product.price < 50000; // Example: products under 50k have offers
   const offerEndDate = hasOffer ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null; // 24 hours from now
@@ -157,6 +158,8 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
       </div>
     </div>
   );
-};
+});
+
+ProductCard.displayName = 'ProductCard';
 
 export default ProductCard;

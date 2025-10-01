@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Laptop, Monitor, Gamepad2, HardDrive, Headphones, Star, Settings } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -58,7 +58,7 @@ const Index = () => {
     }
   }, [cartItems, isCartLoading]);
 
-  const addToCart = (product: Product) => {
+  const addToCart = useCallback((product: Product) => {
     setCartItems(prev => {
       const existingItem = prev.find(item => item.id === product.id);
       if (existingItem) {
@@ -70,9 +70,9 @@ const Index = () => {
       }
       return [...prev, { ...product, quantity: 1 }];
     });
-  };
+  }, []);
 
-  const updateCartQuantity = (id: string, quantity: number) => {
+  const updateCartQuantity = useCallback((id: string, quantity: number) => {
     if (quantity === 0) {
       removeFromCart(id);
     } else {
@@ -82,17 +82,20 @@ const Index = () => {
         )
       );
     }
-  };
+  }, []);
 
-  const removeFromCart = (id: string) => {
+  const removeFromCart = useCallback((id: string) => {
     setCartItems(prev => prev.filter(item => item.id !== id));
-  };
+  }, []);
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setCartItems([]);
-  };
+  }, []);
 
-  const cartItemsCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const cartItemsCount = useMemo(() => 
+    cartItems.reduce((sum, item) => sum + item.quantity, 0),
+    [cartItems]
+  );
 
   const categories = [
     { 
@@ -133,14 +136,46 @@ const Index = () => {
     },
   ];
 
-  const featuredProducts = loading ? [] : products.slice(0, 5); // Get first 5 products for rotation
-  const latestProducts = loading ? [] : products.slice(0, 8);
-  const laptops = loading ? [] : products.filter(p => p.category === 'laptops');
-  const gaming = loading ? [] : products.filter(p => p.category === 'gaming');
-  const desktops = loading ? [] : products.filter(p => p.category === 'desktops');
-  const monitors = loading ? [] : products.filter(p => p.category === 'monitors');
-  const allInOne = loading ? [] : products.filter(p => p.category === 'all-in-one');
-  const accessories = loading ? [] : products.filter(p => p.category === 'accessories');
+  // Memoize filtered products to prevent unnecessary recalculations
+  const featuredProducts = useMemo(() => 
+    loading ? [] : products.slice(0, 5),
+    [loading, products]
+  );
+  
+  const latestProducts = useMemo(() => 
+    loading ? [] : products.slice(0, 8),
+    [loading, products]
+  );
+  
+  const laptops = useMemo(() => 
+    loading ? [] : products.filter(p => p.category === 'laptops'),
+    [loading, products]
+  );
+  
+  const gaming = useMemo(() => 
+    loading ? [] : products.filter(p => p.category === 'gaming'),
+    [loading, products]
+  );
+  
+  const desktops = useMemo(() => 
+    loading ? [] : products.filter(p => p.category === 'desktops'),
+    [loading, products]
+  );
+  
+  const monitors = useMemo(() => 
+    loading ? [] : products.filter(p => p.category === 'monitors'),
+    [loading, products]
+  );
+  
+  const allInOne = useMemo(() => 
+    loading ? [] : products.filter(p => p.category === 'all-in-one'),
+    [loading, products]
+  );
+  
+  const accessories = useMemo(() => 
+    loading ? [] : products.filter(p => p.category === 'accessories'),
+    [loading, products]
+  );
 
   return (
     <div className="min-h-screen bg-background">
