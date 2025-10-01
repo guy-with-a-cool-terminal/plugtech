@@ -5,6 +5,7 @@ export interface Product {
   category: string;
   price: number;
   image: string;
+  image_version: number;
   processor: string;
   ram: string;
   storage: string;

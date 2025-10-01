@@ -14,6 +14,7 @@ interface Product {
   category: string;
   price: number;
   image: string;
+  image_version: number;
   processor: string;
   ram: string;
   storage: string;
@@ -123,7 +124,10 @@ const AdminPage = () => {
 
     const { error: uploadError } = await supabase.storage
       .from('product-images')
-      .upload(filePath, file);
+      .upload(filePath, file, {
+        cacheControl: '2592000', // 30 days cache
+        upsert: false
+      });
 
     if (uploadError) {
       throw uploadError;
@@ -181,6 +185,7 @@ const AdminPage = () => {
         category: formData.category,
         price: parseInt(formData.price),
         image: imageUrl || 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=400&fit=crop&crop=center',
+        image_version: editingProduct?.image_version || 1,
         processor: formData.processor,
         ram: formData.ram,
         storage: formData.storage,

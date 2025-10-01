@@ -36,7 +36,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
     <div className="bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group w-full h-full flex flex-col transform hover:-translate-y-1">
       <div className="relative overflow-hidden aspect-[4/3]">
         <img
-          src={product.image}
+          src={`${product.image}?v=${product.image_version}`}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           loading="lazy"
