@@ -14,7 +14,7 @@ const Footer = () => {
   };
 
   const openDmXWhatsApp = () => {
-    const phoneNumber = "254724285680";
+    const phoneNumber = "254780106324";
     const message = "Hello, I saw your work on Plug Tech Business website";
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
