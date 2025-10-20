@@ -76,7 +76,7 @@ const Header = ({ cartItemsCount = 0, onCartOpen }: HeaderProps) => {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <div className="text-xl sm:text-2xl font-bold text-primary">
-              Plug Tech Business
+              Collo The Plug
             </div>
           </Link>
 
