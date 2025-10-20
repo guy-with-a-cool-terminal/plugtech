@@ -27,8 +27,8 @@ const Footer = () => {
 
   return (
     <>
-      {/* Floating Badge - Always Visible */}
-      <div className="fixed bottom-6 right-6 z-50">
+      {/* Floating Badge - Hidden on Mobile, Visible on Desktop */}
+      <div className="hidden md:block fixed bottom-6 right-6 z-50">
         <div 
           className="relative"
           onMouseEnter={() => setShowBadgeTooltip(true)}
@@ -36,7 +36,8 @@ const Footer = () => {
         >
           <button
             onClick={openCnBWebsite}
-            className="bg-foreground text-background px-4 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2 group"
+            className="bg-foreground text-background px-4 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2 group animate-pulse hover:animate-none"
+            style={{ animationDuration: '3s' }}
           >
             <span className="text-xs font-semibold tracking-wide">CnB Code</span>
             <ExternalLink className="w-3 h-3 opacity-60 group-hover:opacity-100 transition-opacity" />
@@ -170,7 +171,7 @@ const Footer = () => {
           <div className="border-t border-border mt-8 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
               <div className="flex flex-col md:flex-row items-center gap-3">
-                <p>&copy; {currentYear} Plug Tech Business. All rights reserved.</p>
+                <p>&copy; {currentYear} Collo The Plug. All rights reserved.</p>
                 <span className="hidden md:inline text-border">|</span>
                 <div className="flex items-center gap-2">
                   <span className="text-xs">Designed & Built by</span>
