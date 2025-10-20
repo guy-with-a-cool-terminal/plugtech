@@ -11,14 +11,14 @@ interface SEOProps {
 }
 
 const SEO = ({ 
-  title = "Plug Tech Business - Quality Laptops & Computers in Nairobi, Kenya",
+  title = "Collo The Plug - Bringing You Quality Computer Hardware in Kenya",
   description = "Find the best laptops, desktops, and computer accessories in Nairobi, Kenya. Quality refurbished and new computers at competitive prices. Located at Tom Mboya Street, Nairobi CBD.",
   keywords = "laptops Nairobi, computers Kenya, refurbished laptops, desktop computers, computer accessories, Tom Mboya Street, Nairobi CBD, affordable laptops, gaming computers",
   image = "/favicon.ico",
   url = "https://plugtechbusiness.co.ke",
   type = "website"
 }: SEOProps) => {
-  const fullTitle = title.includes("Plug Tech Business") ? title : `${title} | Plug Tech Business`;
+  const fullTitle = title.includes("Collo The Plug") ? title : `${title} | Collo The Plug`;
   
   return (
     <Helmet>
@@ -44,7 +44,7 @@ const SEO = ({
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
-          "name": "Plug Tech Business",
+          "name": "Collo The Plug",
           "description": "Quality computer hardware and accessories in Nairobi, Kenya",
           "image": image,
           "telephone": "+254711483989",
